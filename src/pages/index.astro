@@ -1,0 +1,315 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const features = [
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>`,
+    title: "Emails survive restarts",
+    description:
+      "SQLite-backed by default. Ephemeral mode for throwaway CI runs.",
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>`,
+    title: "Find anything",
+    description:
+      "FTS5 full-text search across subject, body, sender, and recipients.",
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
+    title: "Real-time inbox",
+    description:
+      "WebSocket push. Dark mode. Keyboard shortcuts. Instant delivery.",
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>`,
+    title: "Built for CI",
+    description:
+      "REST assertions, CLI assert mode, and a GitHub Action for your pipeline.",
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>`,
+    title: "Single binary",
+    description:
+      "Frontend embedded at compile time. One binary, zero runtime dependencies.",
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>`,
+    title: "REST API + OpenAPI",
+    description:
+      "Full API spec. Export emails, release to SMTP, webhook notifications.",
+  },
+];
+
+---
+
+<Layout>
+  <div
+    class="pointer-events-none fixed inset-0 z-0"
+    aria-hidden="true"
+  >
+    <div
+      class="absolute -top-40 left-1/2 h-[800px] w-[1000px] -translate-x-1/2 opacity-20"
+      style="background: radial-gradient(ellipse at center, oklch(0.7 0.15 55), transparent 70%)"
+    >
+    </div>
+  </div>
+
+  <div class="relative z-10">
+    <!-- Nav -->
+    <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
+      <a href="/" class="flex items-center gap-3">
+        <img src="/logo.png" alt="RustMail" width="1741" height="1741" class="size-8" />
+        <span class="font-brand text-lg font-bold text-zinc-100">RustMail</span>
+      </a>
+      <div class="flex items-center gap-6">
+        <a
+          href="https://docs.rustmail.app"
+          class="text-sm text-zinc-400 transition hover:text-zinc-200"
+        >
+          Docs
+        </a>
+        <a
+          href="https://github.com/rustmailapp/rustmail"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center gap-2 rounded-lg border border-zinc-800 px-4 py-2 text-sm text-zinc-300 transition hover:border-zinc-700 hover:text-zinc-100"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="mx-auto max-w-4xl px-6 pb-24 pt-20 text-center md:pt-32 md:pb-32">
+      <div class="animate-fade-in">
+        <img
+          src="/logo.png"
+          alt="RustMail logo"
+          width="1741"
+          height="1741"
+          class="mx-auto mb-8 size-28 drop-shadow-[0_0_40px_oklch(0.7_0.15_55_/_0.3)] md:size-36"
+        />
+      </div>
+      <h1
+        class="animate-fade-in-up font-brand text-5xl font-bold tracking-tight md:text-7xl"
+        style="animation-delay: 0.1s"
+      >
+        <span
+          class="bg-gradient-to-r from-orange-400 to-amber-300 bg-clip-text text-transparent"
+        >
+          RustMail
+        </span>
+      </h1>
+      <p
+        class="animate-fade-in-up mt-4 text-xl font-medium tracking-wide text-zinc-400 uppercase md:text-2xl"
+        style="animation-delay: 0.2s"
+      >
+        SMTP Mail Catcher
+      </p>
+      <p
+        class="animate-fade-in-up mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-500"
+        style="animation-delay: 0.3s"
+      >
+        Catch and inspect outbound email from your dev and test environments.
+        Nothing gets delivered &mdash; everything lands in a local web UI instead.
+        Single binary, nothing to install.
+      </p>
+      <div
+        class="animate-fade-in-up mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+        style="animation-delay: 0.4s"
+      >
+        <a
+          href="https://docs.rustmail.app/getting-started/quick-start"
+          class="rounded-lg bg-orange-500 px-7 py-3 text-sm font-semibold text-zinc-950 shadow-lg shadow-orange-500/20 transition hover:bg-orange-400"
+        >
+          Get Started
+        </a>
+        <a
+          href="https://github.com/rustmailapp/rustmail"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="rounded-lg border border-zinc-800 px-7 py-3 text-sm font-semibold text-zinc-300 transition hover:border-zinc-700 hover:text-zinc-100"
+        >
+          View on GitHub
+        </a>
+      </div>
+
+      <!-- Terminal -->
+      <div
+        class="animate-scale-in mx-auto mt-16 max-w-2xl overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/80 text-left shadow-2xl backdrop-blur"
+        style="animation-delay: 0.5s"
+      >
+        <div class="flex items-center gap-2 border-b border-zinc-800 px-4 py-3">
+          <span class="size-3 rounded-full bg-zinc-700"></span>
+          <span class="size-3 rounded-full bg-zinc-700"></span>
+          <span class="size-3 rounded-full bg-zinc-700"></span>
+          <span class="ml-3 text-xs text-zinc-600">terminal</span>
+        </div>
+        <div class="p-5 font-mono text-sm leading-7">
+          <p>
+            <span class="text-zinc-600">$</span>
+            <span class="text-zinc-300"> docker run -p 1025:1025 -p 8025:8025 -e RUSTMAIL_BIND=0.0.0.0 ghcr.io/rustmailapp/rustmail:latest</span>
+          </p>
+          <p class="mt-2 text-zinc-500">
+            SMTP listening on 0.0.0.0:1025
+          </p>
+          <p class="text-zinc-500">
+            Web UI → <span class="text-orange-400/80">http://localhost:8025</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="mx-auto max-w-6xl px-6 py-24">
+      <div class="mb-16 text-center">
+        <h2 class="font-brand text-3xl font-bold text-zinc-100 md:text-4xl">
+          Everything you need, nothing you don't
+        </h2>
+        <p class="mt-4 text-lg text-zinc-500">
+          A self-hosted mail catcher that doesn't cut corners.
+        </p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          features.map((f) => (
+            <div class="group rounded-xl border border-zinc-800/60 bg-zinc-900/40 p-6 transition hover:border-zinc-700 hover:bg-zinc-900/60">
+              <div class="mb-4 inline-flex rounded-lg bg-orange-500/10 p-2.5 text-orange-400">
+                <Fragment set:html={f.icon} />
+              </div>
+              <h3 class="mb-2 text-base font-semibold text-zinc-200">
+                {f.title}
+              </h3>
+              <p class="text-sm leading-relaxed text-zinc-500">{f.description}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Screenshot -->
+    <section class="mx-auto max-w-6xl px-6 py-24">
+      <div class="mb-12 text-center">
+        <h2 class="font-brand text-3xl font-bold text-zinc-100 md:text-4xl">
+          See it in action
+        </h2>
+        <p class="mt-4 text-lg text-zinc-500">
+          A UI that doesn't suck. Dark mode, keyboard shortcuts, real-time updates.
+        </p>
+      </div>
+      <div class="overflow-hidden rounded-xl shadow-2xl shadow-black/40">
+        <img
+          src="/screenshot.png"
+          alt="RustMail web interface showing the inbox with email details"
+          width="3248"
+          height="2122"
+          class="w-full"
+          loading="lazy"
+        />
+      </div>
+    </section>
+
+    <!-- Install -->
+    <section class="mx-auto max-w-4xl px-6 py-24">
+      <div class="mb-12 text-center">
+        <h2 class="font-brand text-3xl font-bold text-zinc-100 md:text-4xl">
+          Get started in seconds
+        </h2>
+      </div>
+      <div class="flex flex-col gap-3">
+        {[
+          { label: "Docker", cmd: "docker run -p 1025:1025 -p 8025:8025 -e RUSTMAIL_BIND=0.0.0.0 ghcr.io/rustmailapp/rustmail:latest" },
+          { label: "Homebrew", cmd: "brew install rustmailapp/rustmail/rustmail" },
+        ].map(({ label, cmd }) => (
+          <div class="group flex items-center gap-4 rounded-xl border border-zinc-800 bg-zinc-900/60 px-5 py-4">
+            <span class="shrink-0 text-xs font-medium tracking-wider text-zinc-500 uppercase w-20">{label}</span>
+            <code class="min-w-0 flex-1 overflow-x-auto font-mono text-sm text-zinc-300 whitespace-nowrap">{cmd}</code>
+            <button
+              data-cmd={cmd}
+              class="copy-btn shrink-0 rounded-md p-1.5 text-zinc-500 transition hover:bg-zinc-800 hover:text-zinc-300"
+              aria-label={`Copy ${label} command`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            </button>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="mx-auto max-w-3xl px-6 py-24 text-center">
+      <h2 class="font-brand text-3xl font-bold text-zinc-100 md:text-4xl">
+        Ready to catch some emails?
+      </h2>
+      <p class="mt-4 text-lg text-zinc-500">
+        Open source, dual-licensed (MIT / Apache 2.0), free forever.
+      </p>
+      <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a
+          href="https://docs.rustmail.app/getting-started/quick-start"
+          class="rounded-lg bg-orange-500 px-7 py-3 text-sm font-semibold text-zinc-950 shadow-lg shadow-orange-500/20 transition hover:bg-orange-400"
+        >
+          Get Started
+        </a>
+        <a
+          href="https://docs.rustmail.app"
+          class="rounded-lg border border-zinc-800 px-7 py-3 text-sm font-semibold text-zinc-300 transition hover:border-zinc-700 hover:text-zinc-100"
+        >
+          Read the Docs
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-800/60 py-12">
+      <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 sm:flex-row">
+        <div class="flex items-center gap-2">
+          <img src="/logo.png" alt="" width="1741" height="1741" class="size-5" />
+          <span class="text-sm text-zinc-500">
+            RustMail &mdash; MIT / Apache 2.0
+          </span>
+        </div>
+        <div class="flex gap-6 text-sm text-zinc-500">
+          <a href="https://docs.rustmail.app" class="transition hover:text-zinc-300">Docs</a>
+          <a href="https://github.com/rustmailapp/rustmail" target="_blank" rel="noopener noreferrer" class="transition hover:text-zinc-300">GitHub</a>
+          <a href="https://github.com/rustmailapp/rustmail/releases" target="_blank" rel="noopener noreferrer" class="transition hover:text-zinc-300">Releases</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</Layout>
+
+<script>
+  const checkSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`;
+  const copySvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`;
+
+  function showCopied(btn: HTMLButtonElement) {
+    btn.innerHTML = checkSvg;
+    btn.classList.add("text-emerald-400");
+    setTimeout(() => {
+      btn.innerHTML = copySvg;
+      btn.classList.remove("text-emerald-400");
+    }, 1500);
+  }
+
+  document.querySelectorAll<HTMLButtonElement>(".copy-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const cmd = btn.dataset.cmd;
+      if (!cmd) return;
+      try {
+        await navigator.clipboard.writeText(cmd);
+      } catch {
+        const input = document.createElement("input");
+        input.value = cmd;
+        input.style.position = "fixed";
+        input.style.opacity = "0";
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        input.remove();
+      }
+      showCopied(btn);
+    });
+  });
+</script>
