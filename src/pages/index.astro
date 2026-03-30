@@ -149,7 +149,7 @@ const features = [
         <div class="p-5 font-mono text-sm leading-7">
           <p>
             <span class="text-zinc-600">$</span>
-            <span class="text-zinc-300"> docker run -p 1025:1025 -p 8025:8025 -e RUSTMAIL_BIND=0.0.0.0 ghcr.io/rustmailapp/rustmail:latest</span>
+            <span class="text-zinc-300"> docker run -p 1025:1025 -p 8025:8025 smyile/rustmail:latest</span>
           </p>
           <p class="mt-2 text-zinc-500">
             SMTP listening on 0.0.0.0:1025
@@ -198,15 +198,33 @@ const features = [
           A UI that doesn't suck. Dark mode, keyboard shortcuts, real-time updates.
         </p>
       </div>
-      <div class="overflow-hidden rounded-xl shadow-2xl shadow-black/40">
-        <img
-          src="/screenshot.png"
-          alt="RustMail web interface showing the inbox with email details"
-          width="3248"
-          height="2122"
-          class="w-full"
-          loading="lazy"
-        />
+      <div class="grid gap-8 md:grid-cols-2">
+        <div>
+          <div class="overflow-hidden rounded-xl shadow-2xl shadow-black/40">
+            <img
+              src="/screenshot.png"
+              alt="RustMail web interface showing the inbox with email details"
+              width="3248"
+              height="2122"
+              class="w-full"
+              loading="lazy"
+            />
+          </div>
+          <p class="mt-3 text-center text-sm text-zinc-500">Web UI</p>
+        </div>
+        <div>
+          <div class="overflow-hidden rounded-xl shadow-2xl shadow-black/40">
+            <img
+              src="/screenshot-tui.png"
+              alt="RustMail terminal UI showing the inbox with email preview"
+              width="1600"
+              height="1024"
+              class="w-full"
+              loading="lazy"
+            />
+          </div>
+          <p class="mt-3 text-center text-sm text-zinc-500">Terminal UI</p>
+        </div>
       </div>
     </section>
 
@@ -219,7 +237,7 @@ const features = [
       </div>
       <div class="flex flex-col gap-3">
         {[
-          { label: "Docker", cmd: "docker run -p 1025:1025 -p 8025:8025 -e RUSTMAIL_BIND=0.0.0.0 ghcr.io/rustmailapp/rustmail:latest" },
+          { label: "Docker", cmd: "docker run -p 1025:1025 -p 8025:8025 smyile/rustmail:latest" },
           { label: "Homebrew", cmd: "brew install rustmailapp/rustmail/rustmail" },
         ].map(({ label, cmd }) => (
           <div class="group flex items-center gap-4 rounded-xl border border-zinc-800 bg-zinc-900/60 px-5 py-4">
