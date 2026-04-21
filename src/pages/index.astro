@@ -239,6 +239,7 @@ const features = [
         {[
           { label: "Docker", cmd: "docker run -p 1025:1025 -p 8025:8025 smyile/rustmail:latest" },
           { label: "Homebrew", cmd: "brew install rustmailapp/rustmail/rustmail" },
+          { label: "AUR", cmd: "yay -S rustmail-bin" },
         ].map(({ label, cmd }) => (
           <div class="group flex items-center gap-4 rounded-xl border border-zinc-800 bg-zinc-900/60 px-5 py-4">
             <span class="shrink-0 text-xs font-medium tracking-wider text-zinc-500 uppercase w-20">{label}</span>
