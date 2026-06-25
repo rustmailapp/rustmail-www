@@ -22,7 +22,7 @@
   --font-brand: "Sora", var(--font-sans);
   --font-mono: "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", monospace;
 
-  --color-surface: oklch(0.145 0.005 285);
+  --color-surface: #141210;
 
   --animate-fade-in: fade-in 0.5s ease-out both;
   --animate-fade-in-up: fade-in-up 0.6s ease-out both;
