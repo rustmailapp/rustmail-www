@@ -96,7 +96,7 @@ const features = [
         style="animation-delay: 0.1s"
       >
         <span
-          class="bg-gradient-to-r from-orange-400 to-amber-300 bg-clip-text text-transparent"
+          class="bg-gradient-to-r from-white to-orange-500 bg-clip-text text-transparent"
         >
           RustMail
         </span>
@@ -200,17 +200,35 @@ const features = [
       </div>
       <div class="mx-auto flex max-w-4xl flex-col gap-16">
         <div>
-          <div class="overflow-hidden rounded-xl">
-            <img
-              src="/screenshot.png"
-              alt="RustMail web interface showing the inbox with email details"
-              width="3248"
-              height="2122"
-              class="w-full"
-              loading="lazy"
-            />
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+              <div class="overflow-hidden rounded-xl border border-zinc-800/60">
+                <img
+                  src="/screenshot.png"
+                  alt="RustMail web interface in dark mode showing the inbox with email details"
+                  width="2032"
+                  height="1162"
+                  class="w-full"
+                  loading="lazy"
+                />
+              </div>
+              <p class="mt-3 text-center text-sm text-zinc-500">Dark</p>
+            </div>
+            <div>
+              <div class="overflow-hidden rounded-xl border border-zinc-800/60">
+                <img
+                  src="/screenshot-light.png"
+                  alt="RustMail web interface in light mode showing the inbox with email details"
+                  width="2032"
+                  height="1162"
+                  class="w-full"
+                  loading="lazy"
+                />
+              </div>
+              <p class="mt-3 text-center text-sm text-zinc-500">Light</p>
+            </div>
           </div>
-          <p class="text-center text-sm text-zinc-500">Web UI</p>
+          <p class="mt-4 text-center text-sm text-zinc-500">Web UI &mdash; dark &amp; light themes</p>
         </div>
         <div>
           <div class="overflow-hidden rounded-xl">
@@ -299,36 +317,4 @@ const features = [
   </div>
 </Layout>
 
-<script>
-  const checkSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`;
-  const copySvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`;
-
-  function showCopied(btn: HTMLButtonElement) {
-    btn.innerHTML = checkSvg;
-    btn.classList.add("text-emerald-400");
-    setTimeout(() => {
-      btn.innerHTML = copySvg;
-      btn.classList.remove("text-emerald-400");
-    }, 1500);
-  }
-
-  document.querySelectorAll<HTMLButtonElement>(".copy-btn").forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      const cmd = btn.dataset.cmd;
-      if (!cmd) return;
-      try {
-        await navigator.clipboard.writeText(cmd);
-      } catch {
-        const input = document.createElement("input");
-        input.value = cmd;
-        input.style.position = "fixed";
-        input.style.opacity = "0";
-        document.body.appendChild(input);
-        input.select();
-        document.execCommand("copy");
-        input.remove();
-      }
-      showCopied(btn);
-    });
-  });
-</script>
+<script type="module" src="/copy.js"></script>
