@@ -1,5 +1,10 @@
 ---
+import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
+import logo from "../assets/logo.png";
+import screenshotDark from "../assets/screenshot.png";
+import screenshotLight from "../assets/screenshot-light.png";
+import screenshotTui from "../assets/screenshot-tui.png";
 
 const features = [
   {
@@ -58,7 +63,7 @@ const features = [
     <!-- Nav -->
     <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
       <a href="/" class="flex items-center gap-3">
-        <img src="/logo.png" alt="RustMail" width="1741" height="1741" class="size-8" />
+        <Image src={logo} alt="RustMail" width={32} height={32} densities={[1, 2]} class="size-8" />
         <span class="font-brand text-lg font-bold text-ink">RustMail</span>
       </a>
       <div class="flex items-center gap-6">
@@ -83,11 +88,13 @@ const features = [
     <!-- Hero -->
     <section class="mx-auto max-w-4xl px-6 pb-24 pt-20 text-center md:pt-32 md:pb-32">
       <div class="animate-fade-in">
-        <img
-          src="/logo.png"
+        <Image
+          src={logo}
           alt="RustMail logo"
-          width="1741"
-          height="1741"
+          width={144}
+          height={144}
+          densities={[1, 2]}
+          loading="eager"
           class="mx-auto mb-8 size-28 drop-shadow-[0_0_40px_oklch(0.7_0.15_55_/_0.3)] md:size-36"
         />
       </div>
@@ -203,11 +210,11 @@ const features = [
           <div class="grid gap-4 sm:grid-cols-2">
             <div>
               <div class="overflow-hidden rounded-xl border border-edge">
-                <img
-                  src="/screenshot.png"
+                <Image
+                  src={screenshotDark}
                   alt="RustMail web interface in dark mode showing the inbox with email details"
-                  width="2032"
-                  height="1162"
+                  widths={[440, 880]}
+                  sizes="(min-width: 640px) 440px, 100vw"
                   class="w-full"
                   loading="lazy"
                 />
@@ -216,11 +223,11 @@ const features = [
             </div>
             <div>
               <div class="overflow-hidden rounded-xl border border-edge">
-                <img
-                  src="/screenshot-light.png"
+                <Image
+                  src={screenshotLight}
                   alt="RustMail web interface in light mode showing the inbox with email details"
-                  width="2032"
-                  height="1162"
+                  widths={[440, 880]}
+                  sizes="(min-width: 640px) 440px, 100vw"
                   class="w-full"
                   loading="lazy"
                 />
@@ -232,11 +239,11 @@ const features = [
         </div>
         <div>
           <div class="overflow-hidden rounded-xl">
-            <img
-              src="/screenshot-tui.png"
+            <Image
+              src={screenshotTui}
               alt="RustMail terminal UI showing the inbox with email preview"
-              width="1600"
-              height="1024"
+              widths={[896, 1792]}
+              sizes="(min-width: 896px) 896px, 100vw"
               class="w-full"
               loading="lazy"
             />
@@ -302,7 +309,7 @@ const features = [
     <footer class="border-t border-edge py-12">
       <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 sm:flex-row">
         <div class="flex items-center gap-2">
-          <img src="/logo.png" alt="" width="1741" height="1741" class="size-5" />
+          <Image src={logo} alt="" width={20} height={20} densities={[1, 2]} class="size-5" />
           <span class="text-sm text-ink-muted">
             RustMail &mdash; MIT / Apache 2.0
           </span>
