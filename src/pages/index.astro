@@ -6,6 +6,8 @@ import screenshotDark from "../assets/screenshot.png";
 import screenshotLight from "../assets/screenshot-light.png";
 import screenshotTui from "../assets/screenshot-tui.png";
 
+const LATEST_RELEASE = "v0.7.0";
+
 const features = [
   {
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>`,
@@ -48,15 +50,31 @@ const features = [
 ---
 
 <Layout>
-  <div
-    class="pointer-events-none fixed inset-0 z-0"
-    aria-hidden="true"
-  >
-    <div
-      class="absolute -top-40 left-1/2 h-[800px] w-[1000px] -translate-x-1/2 opacity-20"
-      style="background: radial-gradient(ellipse at center, oklch(0.7 0.15 55), transparent 70%)"
-    >
-    </div>
+  <div class="patina-layer" aria-hidden="true">
+    <svg class="patina-oxide" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="oxide" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.011 0.019" numOctaves="5" seed="7" />
+          <feColorMatrix
+            type="matrix"
+            values="1.15 0 0 0 0.15
+                    0.46 0 0 0 0.04
+                    0.09 0 0 0 0.01
+                    0 0 0 0.85 -0.2"
+          />
+        </filter>
+        <radialGradient id="oxide-falloff" cx="50%" cy="42%" r="78%">
+          <stop offset="0%" stop-color="#000000" />
+          <stop offset="48%" stop-color="#3a3a3a" />
+          <stop offset="100%" stop-color="#ffffff" />
+        </radialGradient>
+        <mask id="oxide-mask">
+          <rect width="100%" height="100%" fill="url(#oxide-falloff)" />
+        </mask>
+      </defs>
+      <rect width="100%" height="100%" filter="url(#oxide)" mask="url(#oxide-mask)" />
+    </svg>
+    <div class="patina-flare"></div>
   </div>
 
   <div class="relative z-10">
@@ -86,66 +104,50 @@ const features = [
     </nav>
 
     <!-- Hero -->
-    <section class="mx-auto max-w-4xl px-6 pb-24 pt-20 text-center md:pt-32 md:pb-32">
-      <div class="animate-fade-in">
-        <Image
-          src={logo}
-          alt="RustMail logo"
-          width={144}
-          height={144}
-          densities={[1, 2]}
-          loading="eager"
-          class="mx-auto mb-8 size-28 drop-shadow-[0_0_40px_oklch(0.7_0.15_55_/_0.3)] md:size-36"
-        />
-      </div>
-      <h1
-        class="animate-fade-in-up font-brand text-5xl font-bold tracking-tight md:text-7xl"
-        style="animation-delay: 0.1s"
-      >
-        <span
-          class="bg-gradient-to-r from-white to-orange-500 bg-clip-text text-transparent"
-        >
+    <section class="mx-auto grid max-w-6xl items-center gap-12 px-6 pt-16 pb-24 md:grid-cols-[1.05fr_1fr] md:pt-24 md:pb-32">
+      <div class="animate-fade-in-up">
+        <p class="font-brand text-xs font-bold tracking-[0.22em] text-orange-500 uppercase">
           RustMail
-        </span>
-      </h1>
-      <p
-        class="animate-fade-in-up mt-4 text-xl font-medium tracking-wide text-ink-soft uppercase md:text-2xl"
-        style="animation-delay: 0.2s"
-      >
-        SMTP Mail Catcher
-      </p>
-      <p
-        class="animate-fade-in-up mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted"
-        style="animation-delay: 0.3s"
-      >
-        Catch and inspect outbound email from your dev and test environments.
-        Nothing gets delivered &mdash; everything lands in a local web UI instead.
-        Single binary, nothing to install.
-      </p>
-      <div
-        class="animate-fade-in-up mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
-        style="animation-delay: 0.4s"
-      >
-        <a
-          href="https://docs.rustmail.app/getting-started/quick-start"
-          class="rounded-lg bg-orange-500 px-7 py-3 text-sm font-semibold text-zinc-950 shadow-lg shadow-orange-500/20 transition hover:bg-orange-400"
-        >
-          Get Started
-        </a>
-        <a
-          href="https://github.com/rustmailapp/rustmail"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="rounded-lg border border-edge-strong bg-raised px-7 py-3 text-sm font-semibold text-ink transition hover:border-ink-subtle hover:bg-edge"
-        >
-          View on GitHub
-        </a>
+        </p>
+        <h1 class="mt-4 font-brand text-4xl leading-[1.08] font-bold tracking-tight text-balance text-ink md:text-5xl">
+          Catch every email your app sends
+        </h1>
+        <p class="mt-5 max-w-lg text-lg leading-relaxed text-ink-muted">
+          Nothing gets delivered &mdash; everything lands in a local web UI
+          instead. An SMTP mail catcher for your dev and test environments.
+          Single binary, nothing to install.
+        </p>
+        <div class="mt-9 flex flex-wrap items-center gap-4">
+          <a
+            href="https://docs.rustmail.app/getting-started/quick-start"
+            class="btn-forged rounded-lg px-7 py-3 text-sm font-semibold text-zinc-950 transition"
+          >
+            Get Started
+          </a>
+          <a
+            href="https://github.com/rustmailapp/rustmail"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="rounded-lg border border-edge-strong bg-raised px-7 py-3 text-sm font-semibold text-ink transition hover:border-ink-subtle hover:bg-edge"
+          >
+            View on GitHub
+          </a>
+          <a
+            href="https://github.com/rustmailapp/rustmail/releases/latest"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 rounded-full border border-edge-strong px-3 py-1.5 font-mono text-xs text-ink-muted transition hover:border-ink-subtle hover:text-ink"
+          >
+            <span class="size-1.5 rounded-full bg-orange-500"></span>
+            {LATEST_RELEASE}
+          </a>
+        </div>
       </div>
 
       <!-- Terminal -->
       <div
-        class="animate-scale-in mx-auto mt-16 max-w-2xl overflow-hidden rounded-xl border border-edge bg-raised/80 text-left shadow-2xl backdrop-blur"
-        style="animation-delay: 0.5s"
+        class="animate-scale-in overflow-hidden rounded-xl border border-edge bg-raised/80 text-left shadow-2xl backdrop-blur"
+        style="animation-delay: 0.2s"
       >
         <div class="flex items-center gap-2 border-b border-edge px-4 py-3">
           <span class="size-3 rounded-full bg-edge-strong"></span>
@@ -162,7 +164,7 @@ const features = [
             SMTP listening on 0.0.0.0:1025
           </p>
           <p class="text-ink-muted">
-            Web UI → <span class="text-orange-400/80">http://localhost:8025</span>
+            Web UI &rarr; <span class="text-orange-400">http://localhost:8025</span>
           </p>
         </div>
       </div>
@@ -170,19 +172,19 @@ const features = [
 
     <!-- Features -->
     <section class="mx-auto max-w-6xl px-6 py-24">
-      <div class="mb-16 text-center">
-        <h2 class="font-brand text-3xl font-bold text-ink md:text-4xl">
+      <div class="mb-14 max-w-2xl">
+        <h2 class="font-brand text-3xl font-bold text-balance text-ink md:text-4xl">
           Everything you need, nothing you don't
         </h2>
         <p class="mt-4 text-lg text-ink-muted">
           A self-hosted mail catcher that doesn't cut corners.
         </p>
       </div>
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="grid border-t border-l border-edge sm:grid-cols-2 lg:grid-cols-3">
         {
           features.map((f) => (
-            <div class="group rounded-xl border border-edge bg-raised/60 p-6 transition hover:border-edge-strong hover:bg-raised">
-              <div class="mb-4 inline-flex rounded-lg bg-orange-500/10 p-2.5 text-orange-400">
+            <div class="border-r border-b border-edge p-7 transition hover:bg-raised/60">
+              <div class="mb-4 inline-flex text-orange-400">
                 <Fragment set:html={f.icon} />
               </div>
               <h3 class="mb-2 text-base font-semibold text-ink">
@@ -195,68 +197,93 @@ const features = [
       </div>
     </section>
 
-    <!-- Screenshot -->
-    <section class="mx-auto max-w-6xl px-6 py-24">
-      <div class="mb-12 text-center">
-        <h2 class="font-brand text-3xl font-bold text-ink md:text-4xl">
-          See it in action
-        </h2>
-        <p class="mt-4 text-lg text-ink-muted">
-          A UI that doesn't suck. Dark mode, keyboard shortcuts, real-time updates.
-        </p>
-      </div>
-      <div class="mx-auto flex max-w-4xl flex-col gap-16">
-        <div>
-          <div class="grid gap-4 sm:grid-cols-2">
-            <div>
-              <div class="overflow-hidden rounded-xl border border-edge">
-                <Image
-                  src={screenshotDark}
-                  alt="RustMail web interface in dark mode showing the inbox with email details"
-                  widths={[440, 880]}
-                  sizes="(min-width: 640px) 440px, 100vw"
-                  class="w-full"
-                  loading="lazy"
-                />
-              </div>
-              <p class="mt-3 text-center text-sm text-ink-muted">Dark</p>
-            </div>
-            <div>
-              <div class="overflow-hidden rounded-xl border border-edge">
-                <Image
-                  src={screenshotLight}
-                  alt="RustMail web interface in light mode showing the inbox with email details"
-                  widths={[440, 880]}
-                  sizes="(min-width: 640px) 440px, 100vw"
-                  class="w-full"
-                  loading="lazy"
-                />
-              </div>
-              <p class="mt-3 text-center text-sm text-ink-muted">Light</p>
-            </div>
+    <!-- Screenshot: the one full-bleed band that breaks the column -->
+    <section class="border-y border-edge bg-raised/70 py-24">
+      <div class="mx-auto max-w-6xl px-6">
+        <div class="mb-10 flex flex-wrap items-end justify-between gap-6">
+          <div class="max-w-2xl">
+            <h2 class="font-brand text-3xl font-bold text-balance text-ink md:text-4xl">
+              See it in action
+            </h2>
+            <p class="mt-4 text-lg text-ink-muted">
+              A UI that doesn't suck. Keyboard shortcuts, real-time updates, and
+              a theme that follows yours.
+            </p>
           </div>
-          <p class="mt-4 text-center text-sm text-ink-muted">Web UI &mdash; dark &amp; light themes</p>
+          <div
+            class="inline-flex shrink-0 rounded-lg border border-edge-strong bg-surface p-1"
+            role="group"
+            aria-label="Screenshot theme"
+          >
+            <button
+              type="button"
+              data-shot="dark"
+              aria-pressed="true"
+              class="shot-btn rounded-md px-4 py-1.5 text-sm font-medium transition"
+            >
+              Dark
+            </button>
+            <button
+              type="button"
+              data-shot="light"
+              aria-pressed="false"
+              class="shot-btn rounded-md px-4 py-1.5 text-sm font-medium transition"
+            >
+              Light
+            </button>
+          </div>
         </div>
-        <div>
-          <div class="overflow-hidden rounded-xl">
+
+        <div class="overflow-hidden rounded-xl border border-edge-strong shadow-2xl">
+          <div data-shot-panel="dark">
             <Image
-              src={screenshotTui}
-              alt="RustMail terminal UI showing the inbox with email preview"
-              widths={[896, 1792]}
-              sizes="(min-width: 896px) 896px, 100vw"
+              src={screenshotDark}
+              alt="RustMail web interface in dark mode showing the inbox with email details"
+              widths={[1016, 2032]}
+              sizes="(min-width: 1152px) 1088px, 100vw"
+              class="w-full"
+              loading="eager"
+            />
+          </div>
+          <div data-shot-panel="light" hidden>
+            <Image
+              src={screenshotLight}
+              alt="RustMail web interface in light mode showing the inbox with email details"
+              widths={[1016, 2032]}
+              sizes="(min-width: 1152px) 1088px, 100vw"
               class="w-full"
               loading="lazy"
             />
           </div>
-          <p class="text-center text-sm text-ink-muted">Terminal UI</p>
+        </div>
+
+        <div class="mt-16 grid gap-8 md:grid-cols-[1fr_1.6fr] md:items-center">
+          <div>
+            <h3 class="font-brand text-xl font-bold text-ink">
+              Or stay in the terminal
+            </h3>
+            <p class="mt-3 text-sm leading-relaxed text-ink-muted">
+              The same inbox, the same search, without leaving your shell.
+            </p>
+          </div>
+          <div class="overflow-hidden rounded-xl border border-edge">
+            <Image
+              src={screenshotTui}
+              alt="RustMail terminal UI showing the inbox with email preview"
+              widths={[672, 1344]}
+              sizes="(min-width: 768px) 672px, 100vw"
+              class="w-full"
+              loading="lazy"
+            />
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Install -->
     <section class="mx-auto max-w-4xl px-6 py-24">
-      <div class="mb-12 text-center">
-        <h2 class="font-brand text-3xl font-bold text-ink md:text-4xl">
+      <div class="mb-12 max-w-2xl">
+        <h2 class="font-brand text-3xl font-bold text-balance text-ink md:text-4xl">
           Get started in seconds
         </h2>
       </div>
@@ -267,11 +294,11 @@ const features = [
           { label: "Binaries", cmd: "https://github.com/rustmailapp/rustmail/releases/latest" },
         ].map(({ label, cmd }) => (
           <div class="group flex items-center gap-4 rounded-xl border border-edge bg-raised px-5 py-4">
-            <span class="shrink-0 text-xs font-medium tracking-wider text-ink-muted uppercase w-20">{label}</span>
-            <code class="min-w-0 flex-1 overflow-x-auto font-mono text-sm text-ink whitespace-nowrap">{cmd}</code>
+            <span class="w-20 shrink-0 text-xs font-medium tracking-wider text-ink-subtle uppercase">{label}</span>
+            <code class="min-w-0 flex-1 overflow-x-auto font-mono text-sm whitespace-nowrap text-ink">{cmd}</code>
             <button
               data-cmd={cmd}
-              class="copy-btn shrink-0 rounded-md p-1.5 text-ink-muted transition hover:bg-edge hover:text-ink"
+              class="copy-btn shrink-0 rounded-md p-1.5 text-ink-subtle transition hover:bg-edge hover:text-ink"
               aria-label={`Copy ${label}`}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
@@ -283,7 +310,7 @@ const features = [
 
     <!-- CTA -->
     <section class="mx-auto max-w-3xl px-6 py-24 text-center">
-      <h2 class="font-brand text-3xl font-bold text-ink md:text-4xl">
+      <h2 class="font-brand text-3xl font-bold text-balance text-ink md:text-4xl">
         Ready to catch some emails?
       </h2>
       <p class="mt-4 text-lg text-ink-muted">
@@ -292,7 +319,7 @@ const features = [
       <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
         <a
           href="https://docs.rustmail.app/getting-started/quick-start"
-          class="rounded-lg bg-orange-500 px-7 py-3 text-sm font-semibold text-zinc-950 shadow-lg shadow-orange-500/20 transition hover:bg-orange-400"
+          class="btn-forged rounded-lg px-7 py-3 text-sm font-semibold text-zinc-950 transition"
         >
           Get Started
         </a>
@@ -325,3 +352,4 @@ const features = [
 </Layout>
 
 <script type="module" src="/copy.js"></script>
+<script type="module" src="/shot-toggle.js"></script>
