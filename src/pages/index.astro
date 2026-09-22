@@ -212,21 +212,28 @@ const features = [
           </div>
           <div
             class="inline-flex shrink-0 rounded-lg border border-edge-strong bg-surface p-1"
-            role="group"
+            role="tablist"
             aria-label="Screenshot theme"
           >
             <button
               type="button"
+              role="tab"
+              id="shot-tab-dark"
+              aria-controls="shot-panel-dark"
+              aria-selected="true"
               data-shot="dark"
-              aria-pressed="true"
               class="shot-btn rounded-md px-4 py-1.5 text-sm font-medium transition"
             >
               Dark
             </button>
             <button
               type="button"
+              role="tab"
+              id="shot-tab-light"
+              aria-controls="shot-panel-light"
+              aria-selected="false"
+              tabindex="-1"
               data-shot="light"
-              aria-pressed="false"
               class="shot-btn rounded-md px-4 py-1.5 text-sm font-medium transition"
             >
               Light
@@ -235,7 +242,7 @@ const features = [
         </div>
 
         <div class="overflow-hidden rounded-xl border border-edge-strong shadow-2xl">
-          <div data-shot-panel="dark">
+          <div id="shot-panel-dark" role="tabpanel" aria-labelledby="shot-tab-dark" data-shot-panel="dark">
             <Image
               src={screenshotDark}
               alt="RustMail web interface in dark mode showing the inbox with email details"
@@ -245,7 +252,7 @@ const features = [
               loading="eager"
             />
           </div>
-          <div data-shot-panel="light" hidden>
+          <div id="shot-panel-light" role="tabpanel" aria-labelledby="shot-tab-light" data-shot-panel="light" hidden>
             <Image
               src={screenshotLight}
               alt="RustMail web interface in light mode showing the inbox with email details"
