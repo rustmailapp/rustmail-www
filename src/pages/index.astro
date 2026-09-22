@@ -6,7 +6,43 @@ import screenshotDark from "../assets/screenshot.png";
 import screenshotLight from "../assets/screenshot-light.png";
 import screenshotTui from "../assets/screenshot-tui.png";
 
-const LATEST_RELEASE = "v0.7.0";
+const RELEASES_API =
+  "https://api.github.com/repos/rustmailapp/rustmail/releases/latest";
+const RELEASE_FETCH_TIMEOUT_MS = 5000;
+
+async function fetchLatestReleaseTag(): Promise<string> {
+  const token = process.env.GITHUB_TOKEN;
+  const response = await fetch(RELEASES_API, {
+    signal: AbortSignal.timeout(RELEASE_FETCH_TIMEOUT_MS),
+    headers: {
+      Accept: "application/vnd.github+json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+  if (!response.ok) {
+    throw new Error(
+      `GitHub releases API answered ${response.status}; set GITHUB_TOKEN in the build environment if this is rate limiting`,
+    );
+  }
+  const release: unknown = await response.json();
+  const tag =
+    typeof release === "object" && release !== null
+      ? (release as Record<string, unknown>).tag_name
+      : undefined;
+  if (typeof tag !== "string" || tag.length === 0) {
+    throw new Error("GitHub releases API answered without a tag_name string");
+  }
+  return tag;
+}
+
+let latestRelease: string | null = null;
+try {
+  latestRelease = await fetchLatestReleaseTag();
+} catch (error) {
+  console.warn(
+    `Release badge omitted: ${error instanceof Error ? error.message : "unknown error"}`,
+  );
+}
 
 const features = [
   {
@@ -132,15 +168,19 @@ const features = [
           >
             View on GitHub
           </a>
-          <a
-            href="https://github.com/rustmailapp/rustmail/releases/latest"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 rounded-full border border-edge-strong px-3 py-1.5 font-mono text-xs text-ink-muted transition hover:border-ink-subtle hover:text-ink"
-          >
-            <span class="size-1.5 rounded-full bg-orange-500"></span>
-            {LATEST_RELEASE}
-          </a>
+          {
+            latestRelease && (
+              <a
+                href="https://github.com/rustmailapp/rustmail/releases/latest"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 rounded-full border border-edge-strong px-3 py-1.5 font-mono text-xs text-ink-muted transition hover:border-ink-subtle hover:text-ink"
+              >
+                <span class="size-1.5 rounded-full bg-orange-500" />
+                {latestRelease}
+              </a>
+            )
+          }
         </div>
       </div>
 
