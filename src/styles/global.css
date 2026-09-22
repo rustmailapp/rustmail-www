@@ -148,7 +148,7 @@ body {
   color: var(--color-ink-muted);
 }
 
-.shot-btn[aria-pressed="true"] {
+.shot-btn[aria-selected="true"] {
   background-color: var(--color-edge);
   color: var(--color-ink);
 }
