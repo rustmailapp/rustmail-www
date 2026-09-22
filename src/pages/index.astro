@@ -257,7 +257,7 @@ const features = [
         {[
           { label: "Docker", cmd: "docker run -p 1025:1025 -p 8025:8025 smyile/rustmail:latest" },
           { label: "Homebrew", cmd: "brew install rustmailapp/rustmail/rustmail" },
-          { label: "AUR", cmd: "yay -S rustmail-bin" },
+          { label: "Binaries", cmd: "https://github.com/rustmailapp/rustmail/releases/latest" },
         ].map(({ label, cmd }) => (
           <div class="group flex items-center gap-4 rounded-xl border border-edge bg-raised px-5 py-4">
             <span class="shrink-0 text-xs font-medium tracking-wider text-ink-muted uppercase w-20">{label}</span>
@@ -265,7 +265,7 @@ const features = [
             <button
               data-cmd={cmd}
               class="copy-btn shrink-0 rounded-md p-1.5 text-ink-muted transition hover:bg-edge hover:text-ink"
-              aria-label={`Copy ${label} command`}
+              aria-label={`Copy ${label}`}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             </button>
