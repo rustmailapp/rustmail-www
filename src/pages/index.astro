@@ -59,12 +59,12 @@ const features = [
     <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
       <a href="/" class="flex items-center gap-3">
         <img src="/logo.png" alt="RustMail" width="1741" height="1741" class="size-8" />
-        <span class="font-brand text-lg font-bold text-zinc-100">RustMail</span>
+        <span class="font-brand text-lg font-bold text-ink">RustMail</span>
       </a>
       <div class="flex items-center gap-6">
         <a
           href="https://docs.rustmail.app"
-          class="text-sm text-zinc-400 transition hover:text-zinc-200"
+          class="text-sm text-ink-soft transition hover:text-ink"
         >
           Docs
         </a>
@@ -72,7 +72,7 @@ const features = [
           href="https://github.com/rustmailapp/rustmail"
           target="_blank"
           rel="noopener noreferrer"
-          class="flex items-center gap-2 rounded-lg border border-zinc-800 px-4 py-2 text-sm text-zinc-300 transition hover:border-zinc-700 hover:text-zinc-100"
+          class="flex items-center gap-2 rounded-lg border border-edge-strong bg-raised px-4 py-2.5 text-sm text-ink transition hover:border-ink-subtle hover:bg-edge"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           GitHub
@@ -102,13 +102,13 @@ const features = [
         </span>
       </h1>
       <p
-        class="animate-fade-in-up mt-4 text-xl font-medium tracking-wide text-zinc-400 uppercase md:text-2xl"
+        class="animate-fade-in-up mt-4 text-xl font-medium tracking-wide text-ink-soft uppercase md:text-2xl"
         style="animation-delay: 0.2s"
       >
         SMTP Mail Catcher
       </p>
       <p
-        class="animate-fade-in-up mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-500"
+        class="animate-fade-in-up mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted"
         style="animation-delay: 0.3s"
       >
         Catch and inspect outbound email from your dev and test environments.
@@ -129,7 +129,7 @@ const features = [
           href="https://github.com/rustmailapp/rustmail"
           target="_blank"
           rel="noopener noreferrer"
-          class="rounded-lg border border-zinc-800 px-7 py-3 text-sm font-semibold text-zinc-300 transition hover:border-zinc-700 hover:text-zinc-100"
+          class="rounded-lg border border-edge-strong bg-raised px-7 py-3 text-sm font-semibold text-ink transition hover:border-ink-subtle hover:bg-edge"
         >
           View on GitHub
         </a>
@@ -137,24 +137,24 @@ const features = [
 
       <!-- Terminal -->
       <div
-        class="animate-scale-in mx-auto mt-16 max-w-2xl overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/80 text-left shadow-2xl backdrop-blur"
+        class="animate-scale-in mx-auto mt-16 max-w-2xl overflow-hidden rounded-xl border border-edge bg-raised/80 text-left shadow-2xl backdrop-blur"
         style="animation-delay: 0.5s"
       >
-        <div class="flex items-center gap-2 border-b border-zinc-800 px-4 py-3">
-          <span class="size-3 rounded-full bg-zinc-700"></span>
-          <span class="size-3 rounded-full bg-zinc-700"></span>
-          <span class="size-3 rounded-full bg-zinc-700"></span>
-          <span class="ml-3 text-xs text-zinc-600">terminal</span>
+        <div class="flex items-center gap-2 border-b border-edge px-4 py-3">
+          <span class="size-3 rounded-full bg-edge-strong"></span>
+          <span class="size-3 rounded-full bg-edge-strong"></span>
+          <span class="size-3 rounded-full bg-edge-strong"></span>
+          <span class="ml-3 text-xs text-ink-subtle">terminal</span>
         </div>
         <div class="p-5 font-mono text-sm leading-7">
           <p>
-            <span class="text-zinc-600">$</span>
-            <span class="text-zinc-300"> docker run -p 1025:1025 -p 8025:8025 smyile/rustmail:latest</span>
+            <span class="text-ink-subtle">$</span>
+            <span class="text-ink"> docker run -p 1025:1025 -p 8025:8025 smyile/rustmail:latest</span>
           </p>
-          <p class="mt-2 text-zinc-500">
+          <p class="mt-2 text-ink-muted">
             SMTP listening on 0.0.0.0:1025
           </p>
-          <p class="text-zinc-500">
+          <p class="text-ink-muted">
             Web UI → <span class="text-orange-400/80">http://localhost:8025</span>
           </p>
         </div>
@@ -164,24 +164,24 @@ const features = [
     <!-- Features -->
     <section class="mx-auto max-w-6xl px-6 py-24">
       <div class="mb-16 text-center">
-        <h2 class="font-brand text-3xl font-bold text-zinc-100 md:text-4xl">
+        <h2 class="font-brand text-3xl font-bold text-ink md:text-4xl">
           Everything you need, nothing you don't
         </h2>
-        <p class="mt-4 text-lg text-zinc-500">
+        <p class="mt-4 text-lg text-ink-muted">
           A self-hosted mail catcher that doesn't cut corners.
         </p>
       </div>
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {
           features.map((f) => (
-            <div class="group rounded-xl border border-zinc-800/60 bg-zinc-900/40 p-6 transition hover:border-zinc-700 hover:bg-zinc-900/60">
+            <div class="group rounded-xl border border-edge bg-raised/60 p-6 transition hover:border-edge-strong hover:bg-raised">
               <div class="mb-4 inline-flex rounded-lg bg-orange-500/10 p-2.5 text-orange-400">
                 <Fragment set:html={f.icon} />
               </div>
-              <h3 class="mb-2 text-base font-semibold text-zinc-200">
+              <h3 class="mb-2 text-base font-semibold text-ink">
                 {f.title}
               </h3>
-              <p class="text-sm leading-relaxed text-zinc-500">{f.description}</p>
+              <p class="text-sm leading-relaxed text-ink-muted">{f.description}</p>
             </div>
           ))
         }
@@ -191,10 +191,10 @@ const features = [
     <!-- Screenshot -->
     <section class="mx-auto max-w-6xl px-6 py-24">
       <div class="mb-12 text-center">
-        <h2 class="font-brand text-3xl font-bold text-zinc-100 md:text-4xl">
+        <h2 class="font-brand text-3xl font-bold text-ink md:text-4xl">
           See it in action
         </h2>
-        <p class="mt-4 text-lg text-zinc-500">
+        <p class="mt-4 text-lg text-ink-muted">
           A UI that doesn't suck. Dark mode, keyboard shortcuts, real-time updates.
         </p>
       </div>
@@ -202,7 +202,7 @@ const features = [
         <div>
           <div class="grid gap-4 sm:grid-cols-2">
             <div>
-              <div class="overflow-hidden rounded-xl border border-zinc-800/60">
+              <div class="overflow-hidden rounded-xl border border-edge">
                 <img
                   src="/screenshot.png"
                   alt="RustMail web interface in dark mode showing the inbox with email details"
@@ -212,10 +212,10 @@ const features = [
                   loading="lazy"
                 />
               </div>
-              <p class="mt-3 text-center text-sm text-zinc-500">Dark</p>
+              <p class="mt-3 text-center text-sm text-ink-muted">Dark</p>
             </div>
             <div>
-              <div class="overflow-hidden rounded-xl border border-zinc-800/60">
+              <div class="overflow-hidden rounded-xl border border-edge">
                 <img
                   src="/screenshot-light.png"
                   alt="RustMail web interface in light mode showing the inbox with email details"
@@ -225,10 +225,10 @@ const features = [
                   loading="lazy"
                 />
               </div>
-              <p class="mt-3 text-center text-sm text-zinc-500">Light</p>
+              <p class="mt-3 text-center text-sm text-ink-muted">Light</p>
             </div>
           </div>
-          <p class="mt-4 text-center text-sm text-zinc-500">Web UI &mdash; dark &amp; light themes</p>
+          <p class="mt-4 text-center text-sm text-ink-muted">Web UI &mdash; dark &amp; light themes</p>
         </div>
         <div>
           <div class="overflow-hidden rounded-xl">
@@ -241,7 +241,7 @@ const features = [
               loading="lazy"
             />
           </div>
-          <p class="text-center text-sm text-zinc-500">Terminal UI</p>
+          <p class="text-center text-sm text-ink-muted">Terminal UI</p>
         </div>
       </div>
     </section>
@@ -249,7 +249,7 @@ const features = [
     <!-- Install -->
     <section class="mx-auto max-w-4xl px-6 py-24">
       <div class="mb-12 text-center">
-        <h2 class="font-brand text-3xl font-bold text-zinc-100 md:text-4xl">
+        <h2 class="font-brand text-3xl font-bold text-ink md:text-4xl">
           Get started in seconds
         </h2>
       </div>
@@ -259,12 +259,12 @@ const features = [
           { label: "Homebrew", cmd: "brew install rustmailapp/rustmail/rustmail" },
           { label: "AUR", cmd: "yay -S rustmail-bin" },
         ].map(({ label, cmd }) => (
-          <div class="group flex items-center gap-4 rounded-xl border border-zinc-800 bg-zinc-900/60 px-5 py-4">
-            <span class="shrink-0 text-xs font-medium tracking-wider text-zinc-500 uppercase w-20">{label}</span>
-            <code class="min-w-0 flex-1 overflow-x-auto font-mono text-sm text-zinc-300 whitespace-nowrap">{cmd}</code>
+          <div class="group flex items-center gap-4 rounded-xl border border-edge bg-raised px-5 py-4">
+            <span class="shrink-0 text-xs font-medium tracking-wider text-ink-muted uppercase w-20">{label}</span>
+            <code class="min-w-0 flex-1 overflow-x-auto font-mono text-sm text-ink whitespace-nowrap">{cmd}</code>
             <button
               data-cmd={cmd}
-              class="copy-btn shrink-0 rounded-md p-1.5 text-zinc-500 transition hover:bg-zinc-800 hover:text-zinc-300"
+              class="copy-btn shrink-0 rounded-md p-1.5 text-ink-muted transition hover:bg-edge hover:text-ink"
               aria-label={`Copy ${label} command`}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
@@ -276,10 +276,10 @@ const features = [
 
     <!-- CTA -->
     <section class="mx-auto max-w-3xl px-6 py-24 text-center">
-      <h2 class="font-brand text-3xl font-bold text-zinc-100 md:text-4xl">
+      <h2 class="font-brand text-3xl font-bold text-ink md:text-4xl">
         Ready to catch some emails?
       </h2>
-      <p class="mt-4 text-lg text-zinc-500">
+      <p class="mt-4 text-lg text-ink-muted">
         Open source, dual-licensed (MIT / Apache 2.0), free forever.
       </p>
       <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -291,7 +291,7 @@ const features = [
         </a>
         <a
           href="https://docs.rustmail.app"
-          class="rounded-lg border border-zinc-800 px-7 py-3 text-sm font-semibold text-zinc-300 transition hover:border-zinc-700 hover:text-zinc-100"
+          class="rounded-lg border border-edge-strong bg-raised px-7 py-3 text-sm font-semibold text-ink transition hover:border-ink-subtle hover:bg-edge"
         >
           Read the Docs
         </a>
@@ -299,18 +299,18 @@ const features = [
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-zinc-800/60 py-12">
+    <footer class="border-t border-edge py-12">
       <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 sm:flex-row">
         <div class="flex items-center gap-2">
           <img src="/logo.png" alt="" width="1741" height="1741" class="size-5" />
-          <span class="text-sm text-zinc-500">
+          <span class="text-sm text-ink-muted">
             RustMail &mdash; MIT / Apache 2.0
           </span>
         </div>
-        <div class="flex gap-6 text-sm text-zinc-500">
-          <a href="https://docs.rustmail.app" class="transition hover:text-zinc-300">Docs</a>
-          <a href="https://github.com/rustmailapp/rustmail" target="_blank" rel="noopener noreferrer" class="transition hover:text-zinc-300">GitHub</a>
-          <a href="https://github.com/rustmailapp/rustmail/releases" target="_blank" rel="noopener noreferrer" class="transition hover:text-zinc-300">Releases</a>
+        <div class="flex gap-6 text-sm text-ink-muted">
+          <a href="https://docs.rustmail.app" class="transition hover:text-ink">Docs</a>
+          <a href="https://github.com/rustmailapp/rustmail" target="_blank" rel="noopener noreferrer" class="transition hover:text-ink">GitHub</a>
+          <a href="https://github.com/rustmailapp/rustmail/releases" target="_blank" rel="noopener noreferrer" class="transition hover:text-ink">Releases</a>
         </div>
       </div>
     </footer>
