@@ -53,9 +53,9 @@ const features = [
   },
   {
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>`,
-    title: "Find anything",
+    title: "Full-text search",
     description:
-      "FTS5 full-text search across subject, body, sender, and recipients.",
+      "SQLite FTS5 across subject, body, sender, and recipients.",
   },
   {
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
@@ -146,9 +146,9 @@ const features = [
           Catch every email your app sends
         </h1>
         <p class="mt-5 max-w-lg text-lg leading-relaxed text-ink-muted">
-          Nothing gets delivered &mdash; everything lands in a local web UI
-          instead. An SMTP mail catcher for your dev and test environments.
-          Single binary, nothing to install.
+          Nothing gets delivered. Every message lands in a local web UI
+          instead. An SMTP mail catcher for dev and test environments, in one
+          binary.
         </p>
         <div class="mt-9 flex flex-wrap items-center gap-4">
           <a
@@ -212,10 +212,11 @@ const features = [
     <section class="mx-auto max-w-6xl px-6 py-24">
       <div class="mb-14 max-w-2xl">
         <h2 class="font-brand text-3xl font-bold text-balance text-ink md:text-4xl">
-          Everything you need, nothing you don't
+          What it does
         </h2>
         <p class="mt-4 text-lg text-ink-muted">
-          A self-hosted mail catcher that doesn't cut corners.
+          Persistence, search, a REST API, and a single binary you can drop
+          into CI.
         </p>
       </div>
       <div class="grid border-t border-l border-edge sm:grid-cols-2 lg:grid-cols-3">
@@ -241,11 +242,11 @@ const features = [
         <div class="mb-10 flex flex-wrap items-end justify-between gap-6">
           <div class="max-w-2xl">
             <h2 class="font-brand text-3xl font-bold text-balance text-ink md:text-4xl">
-              See it in action
+              The web UI
             </h2>
             <p class="mt-4 text-lg text-ink-muted">
-              A UI that doesn't suck. Keyboard shortcuts, real-time updates, and
-              a theme that follows yours.
+              Keyboard shortcuts, live updates over WebSocket, and a theme that
+              follows your system.
             </p>
           </div>
           <div
@@ -329,7 +330,7 @@ const features = [
     <section class="mx-auto max-w-4xl px-6 py-24">
       <div class="mb-12 max-w-2xl">
         <h2 class="font-brand text-3xl font-bold text-balance text-ink md:text-4xl">
-          Get started in seconds
+          Install
         </h2>
       </div>
       <div class="flex flex-col gap-3">
@@ -369,10 +370,10 @@ const features = [
     <!-- CTA -->
     <section class="mx-auto max-w-3xl px-6 py-24 text-center">
       <h2 class="font-brand text-3xl font-bold text-balance text-ink md:text-4xl">
-        Ready to catch some emails?
+        Start catching email
       </h2>
       <p class="mt-4 text-lg text-ink-muted">
-        Open source, dual-licensed (MIT / Apache 2.0), free forever.
+        Open source, dual-licensed MIT / Apache 2.0.
       </p>
       <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
         <a
@@ -396,7 +397,7 @@ const features = [
         <div class="flex items-center gap-2">
           <Image src={logo} alt="" width={20} height={20} densities={[1, 2]} class="size-5" />
           <span class="text-sm text-ink-muted">
-            RustMail &mdash; MIT / Apache 2.0
+            RustMail &middot; MIT / Apache 2.0
           </span>
         </div>
         <div class="flex gap-5 text-sm text-ink-muted">
