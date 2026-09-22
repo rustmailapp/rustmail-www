@@ -14,6 +14,7 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
   btn.addEventListener("click", async () => {
     const cmd = btn.dataset.cmd;
     if (!cmd) return;
+    let copied = true;
     try {
       await navigator.clipboard.writeText(cmd);
     } catch {
@@ -23,9 +24,9 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
       input.style.opacity = "0";
       document.body.appendChild(input);
       input.select();
-      document.execCommand("copy");
+      copied = document.execCommand("copy");
       input.remove();
     }
-    showCopied(btn);
+    if (copied) showCopied(btn);
   });
 });
