@@ -23,7 +23,7 @@ const url = "https://rustmail.app";
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#f97316" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'none'; base-uri 'self'; form-action 'none'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src https://api.github.com; base-uri 'self'; form-action 'none'" />
     <link rel="canonical" href={url} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={url} />
