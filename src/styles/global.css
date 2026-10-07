@@ -156,3 +156,17 @@ body {
 .shot-btn:hover {
   color: var(--color-ink);
 }
+
+.footer-wordmark {
+  font-size: clamp(4rem, 17.5vw, 15rem);
+  font-weight: 700;
+  line-height: 0.8;
+  letter-spacing: -0.03em;
+  color: transparent;
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--color-orange-500) 30%, transparent),
+    transparent 72%
+  );
+  background-clip: text;
+}
