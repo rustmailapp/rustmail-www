@@ -360,7 +360,7 @@ const features = [
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-edge py-12">
+    <footer class="overflow-hidden border-t border-edge pt-12">
       <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 sm:flex-row">
         <div class="flex items-center gap-2">
           <Image src={logo} alt="" width={20} height={20} densities={[1, 2]} class="size-5" />
@@ -373,6 +373,9 @@ const features = [
           <a href="https://github.com/rustmailapp/rustmail" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-1 py-1 transition hover:text-ink">GitHub</a>
           <a href="https://github.com/rustmailapp/rustmail/releases" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-1 py-1 transition hover:text-ink">Releases</a>
         </div>
+      </div>
+      <div aria-hidden="true" class="footer-wordmark mt-10 -mb-[0.2em] text-center font-brand select-none">
+        RUSTMAIL
       </div>
     </footer>
   </div>
