@@ -11,7 +11,7 @@ const features = [
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>`,
     title: "Emails survive restarts",
     description:
-      "SQLite-backed by default. Ephemeral mode for throwaway CI runs.",
+      "SQLite-backed by default, or in memory with --ephemeral for throwaway CI runs.",
   },
   {
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>`,
@@ -23,7 +23,7 @@ const features = [
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
     title: "Real-time inbox",
     description:
-      "WebSocket push. Dark mode. Keyboard shortcuts. Instant delivery.",
+      "New mail appears over WebSocket the moment it arrives. Vim-style keys to move, search, and delete.",
   },
   {
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>`,
@@ -35,13 +35,13 @@ const features = [
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>`,
     title: "Single binary",
     description:
-      "Frontend embedded at compile time. One binary, zero runtime dependencies.",
+      "Frontend embedded at compile time. Zero runtime dependencies.",
   },
   {
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>`,
     title: "REST API + OpenAPI",
     description:
-      "Full API spec. Export emails, release to SMTP, webhook notifications.",
+      "Export as EML or JSON, release to a real SMTP server, a webhook on every new message.",
   },
 ];
 
@@ -159,10 +159,10 @@ const features = [
             <span class="text-ink"> docker run -p 1025:1025 -p 8025:8025 smyile/rustmail:latest</span>
           </p>
           <p class="mt-2 text-ink-muted">
-            SMTP listening on 0.0.0.0:1025
+            <span class="text-ink-subtle">INFO</span> HTTP server listening port=<span class="text-orange-400">8025</span>
           </p>
           <p class="text-ink-muted">
-            Web UI &rarr; <span class="text-orange-400">http://localhost:8025</span>
+            <span class="text-ink-subtle">INFO</span> SMTP server listening addr=0.0.0.0:<span class="text-orange-400">1025</span>
           </p>
         </div>
       </div>
@@ -205,8 +205,10 @@ const features = [
               The web UI
             </h2>
             <p class="mt-4 text-lg text-ink-muted">
-              Keyboard shortcuts, live updates over WebSocket, and a theme that
-              follows your system.
+              Inbox, message, and a details rail with auth results, attachments
+              and every link, with plain HTTP and localhost links flagged.
+              Preview the HTML at desktop or 375px phone width, in five
+              palettes, dark or light.
             </p>
           </div>
           <div
@@ -269,7 +271,13 @@ const features = [
               Or stay in the terminal
             </h3>
             <p class="mt-3 text-sm leading-relaxed text-ink-muted">
-              The same inbox, the same search, without leaving your shell.
+              <code class="font-mono text-ink">rustmail tui</code> connects to a
+              running server: the same inbox and search, with vim-style keys. It
+              ships in the pre-built binaries (not the Docker image) and as a{" "}
+              <a
+                href="https://docs.rustmail.app/integrations/neovim"
+                class="text-ink underline decoration-edge-strong underline-offset-4 transition hover:decoration-ink"
+              >Neovim plugin</a>.
             </p>
           </div>
           <div class="overflow-hidden rounded-xl shadow-2xl">
@@ -318,7 +326,7 @@ const features = [
         >
           <span class="w-20 shrink-0 text-xs font-medium tracking-wider text-ink-subtle uppercase">Binaries</span>
           <span class="min-w-0 flex-1 truncate text-sm text-ink">
-            Pre-built for Linux, macOS and ARM
+            Linux x86_64, aarch64 and armv7, macOS Intel and Apple Silicon
           </span>
           <span class="shrink-0 p-1.5 text-ink-subtle transition group-hover:text-ink">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
