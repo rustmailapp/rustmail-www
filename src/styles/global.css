@@ -22,14 +22,20 @@
   --font-brand: "Sora", var(--font-sans);
   --font-mono: "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", monospace;
 
-  --color-surface: #141210;
-  --color-raised: #1e1a17;
-  --color-edge: #2e2823;
-  --color-edge-strong: #66615b;
-  --color-ink: #cfc5ba;
-  --color-ink-soft: #a9a098;
-  --color-ink-muted: #938b84;
-  --color-ink-subtle: #8a837b;
+  --color-surface: #0f0806;
+  --color-raised: #1f1612;
+  --color-edge: #30241f;
+  --color-edge-strong: #6f5e56;
+  --color-ink: #dbd1cb;
+  --color-ink-soft: #ac9c94;
+  --color-ink-muted: #a29189;
+  --color-ink-subtle: #9f8e86;
+
+  --color-orange-300: #ffac84;
+  --color-orange-400: #f8875a;
+  --color-orange-500: #e6653c;
+  --color-orange-600: #ce4d2d;
+  --color-orange-700: #ad3923;
 
   --animate-fade-in-up: fade-in-up 0.6s ease-out both;
   --animate-scale-in: scale-in 0.4s ease-out both;
@@ -86,7 +92,7 @@ body {
 }
 
 ::selection {
-  background-color: oklch(0.7 0.15 55 / 0.3);
+  background-color: color-mix(in oklab, var(--color-orange-500) 35%, transparent);
 }
 
 .patina-layer {
@@ -113,35 +119,41 @@ body {
   width: min(72rem, 140vw);
   height: 52rem;
   transform: translateX(-50%);
-  background: radial-gradient(
-    ellipse at center,
-    oklch(0.7 0.15 55 / 0.22),
-    transparent 68%
-  );
+  background:
+    radial-gradient(
+      ellipse 40% 50% at 44% 50%,
+      oklch(0.72 0.13 62 / 0.14),
+      transparent
+    ),
+    radial-gradient(
+      ellipse 40% 50% at 56% 50%,
+      oklch(0.55 0.16 33 / 0.14),
+      transparent
+    );
 }
 
 .btn-forged {
   background-image: linear-gradient(
     180deg,
-    oklch(0.78 0.16 56) 0%,
-    oklch(0.705 0.19 48) 55%,
-    oklch(0.58 0.17 45) 100%
+    var(--color-orange-400) 0%,
+    var(--color-orange-500) 55%,
+    var(--color-orange-600) 100%
   );
   box-shadow:
-    inset 0 1px 0 oklch(0.95 0.04 70 / 0.45),
-    0 0 26px oklch(0.705 0.19 48 / 0.28);
+    inset 0 1px 0 color-mix(in oklab, var(--color-orange-300) 70%, transparent),
+    0 0 26px color-mix(in oklab, var(--color-orange-500) 28%, transparent);
 }
 
 .btn-forged:hover {
   background-image: linear-gradient(
     180deg,
-    oklch(0.83 0.15 58) 0%,
-    oklch(0.755 0.18 50) 55%,
-    oklch(0.63 0.17 46) 100%
+    var(--color-orange-300) 0%,
+    var(--color-orange-400) 55%,
+    var(--color-orange-500) 100%
   );
   box-shadow:
-    inset 0 1px 0 oklch(0.97 0.04 70 / 0.55),
-    0 0 34px oklch(0.705 0.19 48 / 0.38);
+    inset 0 1px 0 color-mix(in oklab, var(--color-orange-300) 85%, transparent),
+    0 0 34px color-mix(in oklab, var(--color-orange-500) 38%, transparent);
 }
 
 .shot-btn {
