@@ -8,6 +8,7 @@ export interface Guide {
   sendLabel: string;
   send: string;
   testCommand: string;
+  ciEnv?: Record<string, string>;
   notes: string[];
 }
 
@@ -28,6 +29,7 @@ MAIL_ENCRYPTION=null`,
     send: `php artisan tinker
 > Mail::raw('Hello from Laravel', fn ($m) => $m->to('ada@example.com')->subject('Welcome'));`,
     testCommand: "php artisan dusk",
+    ciEnv: { MAIL_MAILER: "smtp", MAIL_HOST: "127.0.0.1", MAIL_PORT: "1025" },
     notes: [
       "Laravel's phpunit.xml sets MAIL_MAILER=array, so feature tests never reach SMTP. Assert on mail from end-to-end tests such as Dusk, which run against the app with your .env settings.",
       "Laravel Sail users can run RustMail as a service in docker-compose.yml and set MAIL_HOST to the service name.",
@@ -110,6 +112,7 @@ message.setSubject("Welcome");
 message.setText("Hello from Spring Boot");
 mailSender.send(message);`,
     testCommand: "./mvnw verify",
+    ciEnv: { SPRING_MAIL_HOST: "localhost", SPRING_MAIL_PORT: "1025" },
     notes: ["Put these properties in a dev or test profile so production keeps its real SMTP settings."],
   },
 ];

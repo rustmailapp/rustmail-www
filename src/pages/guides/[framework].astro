@@ -16,13 +16,18 @@ interface Props {
 
 const { guide } = Astro.props;
 const DOCKER_CMD = "docker run -p 1025:1025 -p 8025:8025 smyile/rustmail:latest";
+const ciEnv = guide.ciEnv
+  ? `\n  env:\n${Object.entries(guide.ciEnv)
+      .map(([key, value]) => `    ${key}: "${value}"`)
+      .join("\n")}`
+  : "";
 const workflow = `- name: Start RustMail on localhost:1025
   uses: rustmailapp/rustmail-action@v1
   with:
     mode: start
 
 - name: Run the tests that send mail over SMTP
-  run: ${guide.testCommand}
+  run: ${guide.testCommand}${ciEnv}
 
 - name: Fail if the welcome email never arrived
   uses: rustmailapp/rustmail-action@v1
