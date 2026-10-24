@@ -16,11 +16,16 @@ interface Props {
 
 const { guide } = Astro.props;
 const DOCKER_CMD = "docker run -p 1025:1025 -p 8025:8025 smyile/rustmail:latest";
-const workflow = `- uses: rustmailapp/rustmail-action@v1
+const workflow = `- name: Start RustMail on localhost:1025
+  uses: rustmailapp/rustmail-action@v1
+  with:
+    mode: start
 
-- run: ${guide.testCommand}
+- name: Run the tests that send mail over SMTP
+  run: ${guide.testCommand}
 
-- uses: rustmailapp/rustmail-action@v1
+- name: Fail if the welcome email never arrived
+  uses: rustmailapp/rustmail-action@v1
   with:
     mode: assert
     assert-count: 1
@@ -43,7 +48,7 @@ const steps = [
   },
   {
     title: "Assert on it in CI",
-    body: "In GitHub Actions, start RustMail, run the tests that send real mail over SMTP, then fail the job when the email never arrives.",
+    body: `In GitHub Actions, start RustMail, run tests that send mail with the ${guide.configFile} settings from step 2, then fail the job when the email never arrives.`,
     code: workflow,
     label: "GitHub Actions steps",
   },
