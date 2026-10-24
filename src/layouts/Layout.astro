@@ -7,11 +7,45 @@ interface Props {
 }
 
 const {
-  title = "RustMail · SMTP Mail Catcher",
-  description = "Catch and inspect outbound email from dev and CI. Single binary, nothing to install. Self-hosted, open source.",
+  title = "RustMail · Local SMTP mail catcher for dev and CI testing",
+  description = "Test email in dev and CI. RustMail catches everything your app sends over SMTP: web UI, terminal UI, REST API, CLI assertions and a GitHub Action. Open source.",
 } = Astro.props;
 
 const url = "https://rustmail.app";
+const ogImage = `${url}/og.png`;
+const ogImageAlt = "RustMail web UI: the inbox, an HTML email in desktop preview, and the details rail listing its links";
+const OG_IMAGE_WIDTH = "1200";
+const OG_IMAGE_HEIGHT = "630";
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "RustMail",
+    description,
+    url,
+    image: ogImage,
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Linux, macOS, Docker",
+    isAccessibleForFree: true,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    license: ["https://opensource.org/licenses/MIT", "https://www.apache.org/licenses/LICENSE-2.0"],
+    downloadUrl: "https://github.com/rustmailapp/rustmail/releases/latest",
+    softwareHelp: { "@type": "CreativeWork", url: "https://docs.rustmail.app" },
+    sameAs: [
+      "https://github.com/rustmailapp/rustmail",
+      "https://hub.docker.com/r/smyile/rustmail",
+      "https://github.com/marketplace/actions/rustmail-action",
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "RustMail",
+    url,
+  },
+];
+const jsonLdHtml = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
 ---
 
 <!doctype html>
@@ -23,17 +57,23 @@ const url = "https://rustmail.app";
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#e6653c" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src https://api.github.com; base-uri 'self'; form-action 'none'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://api.github.com; base-uri 'self'; form-action 'none'" />
     <link rel="canonical" href={url} />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="RustMail" />
     <meta property="og:url" content={url} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={`${url}/og.png`} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content={OG_IMAGE_WIDTH} />
+    <meta property="og:image:height" content={OG_IMAGE_HEIGHT} />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${url}/og.png`} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+    <script is:inline type="application/ld+json" set:html={jsonLdHtml} />
   </head>
   <body class="min-h-screen overflow-x-hidden">
     <slot />
