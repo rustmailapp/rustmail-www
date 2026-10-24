@@ -1,0 +1,25 @@
+---
+import { Image } from "astro:assets";
+import logo from "../assets/logo.png";
+
+const linkClass = "inline-flex min-h-11 items-center px-2 transition hover:text-ink";
+---
+
+<footer class="overflow-hidden border-t border-edge pt-12">
+  <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 sm:flex-row">
+    <div class="flex items-center gap-2">
+      <Image src={logo} alt="" width={20} height={20} densities={[1, 2]} class="size-5" />
+      <span class="text-sm text-ink-muted">
+        RustMail &middot; MIT / Apache 2.0
+      </span>
+    </div>
+    <div class="flex flex-wrap justify-center gap-x-3 text-sm text-ink-muted">
+      <a href="https://docs.rustmail.app" class={linkClass}>Docs</a>
+      <a href="https://github.com/rustmailapp/rustmail" target="_blank" rel="noopener noreferrer" class={linkClass}>GitHub</a>
+      <a href="https://github.com/rustmailapp/rustmail/releases" target="_blank" rel="noopener noreferrer" class={linkClass}>Releases</a>
+    </div>
+  </div>
+  <div aria-hidden="true" class="footer-wordmark mt-10 -mb-[0.2em] text-center font-brand select-none">
+    RUSTMAIL
+  </div>
+</footer>
