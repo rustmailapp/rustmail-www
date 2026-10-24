@@ -43,7 +43,7 @@ const steps = [
   },
   {
     title: "Assert on it in CI",
-    body: "In GitHub Actions, start RustMail before your tests and fail the job when the email never arrives.",
+    body: "In GitHub Actions, start RustMail, run the tests that send real mail over SMTP, then fail the job when the email never arrives.",
     code: workflow,
     label: "GitHub Actions steps",
   },

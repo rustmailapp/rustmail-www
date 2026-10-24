@@ -27,8 +27,9 @@ MAIL_ENCRYPTION=null`,
     sendLabel: "Laravel tinker command",
     send: `php artisan tinker
 > Mail::raw('Hello from Laravel', fn ($m) => $m->to('ada@example.com')->subject('Welcome'));`,
-    testCommand: "php artisan test",
+    testCommand: "php artisan dusk",
     notes: [
+      "Laravel's phpunit.xml sets MAIL_MAILER=array, so feature tests never reach SMTP. Assert on mail from end-to-end tests such as Dusk, which run against the app with your .env settings.",
       "Laravel Sail users can run RustMail as a service in docker-compose.yml and set MAIL_HOST to the service name.",
       "Keep MAIL_ENCRYPTION=null: RustMail only speaks STARTTLS when you give it a certificate.",
     ],
@@ -45,9 +46,9 @@ EMAIL_PORT = 1025
 EMAIL_USE_TLS = False`,
     sendLabel: "Django sendtestemail command",
     send: `python manage.py sendtestemail ada@example.com`,
-    testCommand: "python manage.py test",
+    testCommand: "pytest e2e/",
     notes: [
-      "Django's test runner swaps in the locmem backend, so point integration or end-to-end tests at a settings module that keeps the SMTP backend.",
+      "Django's test runner always swaps in the locmem backend, so manage.py test never reaches SMTP. Assert on mail from end-to-end tests that drive a running server, such as Playwright with pytest.",
     ],
   },
   {
