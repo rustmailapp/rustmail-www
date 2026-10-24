@@ -1,0 +1,36 @@
+---
+import { Image } from "astro:assets";
+import logo from "../assets/logo.png";
+import { githubIcon } from "../data/icons";
+
+const links = [
+  { href: "/guides/", label: "Guides" },
+  { href: "/compare/", label: "Compare" },
+  { href: "https://docs.rustmail.app", label: "Docs" },
+];
+---
+
+<nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
+  <a href="/" class="flex min-h-11 items-center gap-3">
+    <Image src={logo} alt="RustMail" width={32} height={32} densities={[1, 2]} loading="eager" class="size-8" />
+    <span class="hidden font-brand text-lg font-bold text-ink sm:inline">RustMail</span>
+  </a>
+  <div class="flex items-center gap-1 sm:gap-2">
+    {
+      links.map(({ href, label }) => (
+        <a href={href} class="inline-flex min-h-11 items-center px-2 text-sm text-ink-soft transition hover:text-ink sm:px-3">
+          {label}
+        </a>
+      ))
+    }
+    <a
+      href="https://github.com/rustmailapp/rustmail"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="RustMail on GitHub"
+      class="inline-flex size-11 items-center justify-center rounded-lg text-ink opacity-75 transition hover:opacity-100"
+    >
+      <Fragment set:html={githubIcon} />
+    </a>
+  </div>
+</nav>

@@ -1,0 +1,126 @@
+---
+import CodeBlock from "../../components/CodeBlock.astro";
+import Patina from "../../components/Patina.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import SiteNav from "../../components/SiteNav.astro";
+import { type Guide, guides } from "../../data/guides";
+import Layout from "../../layouts/Layout.astro";
+
+export function getStaticPaths() {
+  return guides.map((guide) => ({ params: { framework: guide.slug }, props: { guide } }));
+}
+
+interface Props {
+  guide: Guide;
+}
+
+const { guide } = Astro.props;
+const DOCKER_CMD = "docker run -p 1025:1025 -p 8025:8025 smyile/rustmail:latest";
+const ciEnv = guide.ciEnv
+  ? `\n  env:\n${Object.entries(guide.ciEnv)
+      .map(([key, value]) => `    ${key}: "${value}"`)
+      .join("\n")}`
+  : "";
+const workflow = `- name: Start RustMail on localhost:1025
+  uses: rustmailapp/rustmail-action@v1
+  with:
+    mode: start
+
+- name: Run the tests that send mail over SMTP
+  run: ${guide.testCommand}${ciEnv}
+
+- name: Fail if the welcome email never arrived
+  uses: rustmailapp/rustmail-action@v1
+  with:
+    mode: assert
+    assert-count: 1
+    assert-subject: "Welcome"`;
+const others = guides.filter((g) => g.slug !== guide.slug);
+const linkClass = "text-ink underline decoration-edge-strong underline-offset-4 transition hover:decoration-ink";
+const steps = [
+  { title: "Start RustMail", body: "One container, SMTP on port 1025 and the web UI on 8025.", code: DOCKER_CMD, label: "docker run command" },
+  {
+    title: `Point ${guide.name} at it`,
+    body: `In ${guide.configFile}, send mail to localhost:1025 with no TLS and no credentials.`,
+    code: guide.config,
+    label: guide.configLabel,
+  },
+  {
+    title: "Send a test email",
+    body: "Then open localhost:8025: the message is already in the inbox, with its HTML, headers and links.",
+    code: guide.send,
+    label: guide.sendLabel,
+  },
+  {
+    title: "Assert on it in CI",
+    body: `In GitHub Actions, start RustMail, run tests that send mail with the ${guide.configFile} settings from step 2, then fail the job when the email never arrives.`,
+    code: workflow,
+    label: "GitHub Actions steps",
+  },
+];
+---
+
+<Layout
+  title={`${guide.name} email testing with a local SMTP server · RustMail`}
+  description={`Catch every email your ${guide.name} app sends in development and CI: point ${guide.configFile} at RustMail on localhost:1025, inspect mail in a web UI, and assert on it in GitHub Actions.`}
+  path={`/guides/${guide.slug}/`}
+>
+  <Patina />
+
+  <div class="relative z-10">
+    <SiteNav />
+
+    <main class="mx-auto max-w-3xl px-6 pt-12 pb-24 md:pt-20">
+      <p class="text-sm text-ink-muted">
+        <a href="/guides/" class={linkClass}>Guides</a> / {guide.name}
+      </p>
+      <h1 class="mt-4 font-brand text-4xl leading-[1.08] font-bold tracking-tight text-balance text-ink md:text-5xl">
+        Test {guide.name} emails locally
+      </h1>
+      <p class="mt-5 text-lg leading-relaxed text-ink-muted">
+        RustMail is a local SMTP mail catcher. Your {guide.language} app keeps
+        sending mail the way it does in production, and every message lands in
+        a web UI instead of a real inbox. Four steps, about two minutes.
+      </p>
+
+      <ol class="mt-14 flex flex-col gap-14">
+        {
+          steps.map((step, i) => (
+            <li class="grid gap-4 md:grid-cols-[2.5rem_1fr]">
+              <span class="font-brand text-2xl font-bold text-orange-400" aria-hidden="true">{i + 1}</span>
+              <div class="min-w-0">
+                <h2 class="font-brand text-2xl font-bold text-ink">{step.title}</h2>
+                <p class="mt-2 text-ink-muted">{step.body}</p>
+                <div class="mt-5">
+                  <CodeBlock code={step.code} label={step.label} />
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+
+      {
+        guide.notes.length > 0 && (
+          <section class="mt-16 border-t border-edge pt-10">
+            <h2 class="font-brand text-2xl font-bold text-ink">Good to know</h2>
+            <ul class="mt-4 flex list-disc flex-col gap-3 pl-5 text-ink-muted marker:text-orange-400">
+              {guide.notes.map((note) => <li>{note}</li>)}
+            </ul>
+          </section>
+        )
+      }
+
+      <section class="mt-16 border-t border-edge pt-10">
+        <h2 class="font-brand text-2xl font-bold text-ink">Other frameworks</h2>
+        <p class="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+          {others.map((g) => <a href={`/guides/${g.slug}/`} class={linkClass}>{g.name}</a>)}
+        </p>
+      </section>
+    </main>
+
+    <SiteFooter />
+  </div>
+</Layout>
+
+<script type="module" src="/copy.js"></script>
