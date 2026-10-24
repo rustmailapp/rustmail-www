@@ -6,45 +6,75 @@ import screenshotDark from "../assets/screenshot.png";
 import screenshotLight from "../assets/screenshot-light.png";
 import screenshotTui from "../assets/screenshot-tui.png";
 
+const DOCKER_CMD = "docker run -p 1025:1025 -p 8025:8025 smyile/rustmail:latest";
+const ACTION_URL = "https://github.com/marketplace/actions/rustmail-action";
+
 const features = [
   {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>`,
+    title: "Flags links that break outside dev",
+    description:
+      "The details rail lists every link in the message and flags plain HTTP and localhost URLs before the mail reaches real users.",
+  },
+  {
+    title: "DKIM, SPF and DMARC results",
+    description:
+      "Authentication-Results, DKIM-Signature, Received-SPF and ARC headers, parsed into a verdict badge per check.",
+  },
+  {
+    title: "Phone-width preview",
+    description:
+      "Render the HTML at desktop width or in a 375px frame to see how a responsive template collapses.",
+  },
+  {
     title: "Emails survive restarts",
     description:
       "SQLite-backed by default, or in memory with --ephemeral for throwaway CI runs.",
   },
   {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>`,
     title: "Full-text search",
-    description:
-      "SQLite FTS5 across subject, body, sender, and recipients.",
+    description: "SQLite FTS5 across subject, body, sender, and recipients.",
   },
   {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
-    title: "Real-time inbox",
+    title: "REST API, webhooks and export",
     description:
-      "New mail appears over WebSocket the moment it arrives. Vim-style keys to move, search, and delete.",
-  },
-  {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>`,
-    title: "Built for CI",
-    description:
-      "REST assertions, CLI assert mode, and a GitHub Action for your pipeline.",
-  },
-  {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>`,
-    title: "Single binary",
-    description:
-      "Frontend embedded at compile time. Zero runtime dependencies.",
-  },
-  {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>`,
-    title: "REST API + OpenAPI",
-    description:
-      "Export as EML or JSON, release to a real SMTP server, a webhook on every new message.",
+      "An OpenAPI-documented REST API, a webhook on every new message, EML or JSON export, and release to a real SMTP server.",
   },
 ];
 
+const ciExamples = [
+  {
+    id: "action",
+    label: "GitHub Action",
+    code: `- uses: rustmailapp/rustmail-action@v1
+
+- run: npm test
+
+- uses: rustmailapp/rustmail-action@v1
+  with:
+    mode: assert
+    assert-count: 1
+    assert-subject: "Welcome"`,
+  },
+  {
+    id: "cli",
+    label: "CLI",
+    code: `rustmail assert --timeout=60s --min-count=2 --subject="Password Reset"`,
+  },
+  {
+    id: "rest",
+    label: "REST",
+    code: `curl -f "localhost:8025/api/v1/assert/count?min=1&subject=Welcome"`,
+  },
+];
+
+const installs = [
+  { label: "Docker", cmd: DOCKER_CMD },
+  { label: "Homebrew", cmd: "brew install rustmailapp/rustmail/rustmail" },
+];
+
+const copyIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`;
+const githubIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>`;
+const linkClass = "text-ink underline decoration-edge-strong underline-offset-4 transition hover:decoration-ink";
 ---
 
 <Layout>
@@ -78,14 +108,14 @@ const features = [
   <div class="relative z-10">
     <!-- Nav -->
     <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-      <a href="/" class="flex items-center gap-3">
+      <a href="/" class="flex min-h-11 items-center gap-3">
         <Image src={logo} alt="RustMail" width={32} height={32} densities={[1, 2]} loading="eager" class="size-8" />
         <span class="font-brand text-lg font-bold text-ink">RustMail</span>
       </a>
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2">
         <a
           href="https://docs.rustmail.app"
-          class="inline-flex items-center px-1 py-1.5 text-sm text-ink-soft transition hover:text-ink"
+          class="inline-flex min-h-11 items-center px-3 text-sm text-ink-soft transition hover:text-ink"
         >
           Docs
         </a>
@@ -94,24 +124,26 @@ const features = [
           target="_blank"
           rel="noopener noreferrer"
           aria-label="RustMail on GitHub"
-          class="inline-flex size-10 items-center justify-center rounded-lg text-ink opacity-75 transition hover:opacity-100"
+          class="inline-flex size-11 items-center justify-center rounded-lg text-ink opacity-75 transition hover:opacity-100"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          <Fragment set:html={githubIcon} />
         </a>
       </div>
     </nav>
 
     <main>
       <!-- Hero -->
-      <section class="mx-auto grid max-w-6xl items-center gap-12 px-6 pt-16 pb-24 md:grid-cols-[1.05fr_1fr] md:pt-24 md:pb-32">
+      <section class="mx-auto grid max-w-6xl items-center gap-12 px-6 pt-12 pb-16 md:grid-cols-[1.05fr_1fr] md:pt-20 md:pb-20">
         <div class="animate-fade-in-up">
           <h1 class="font-brand text-4xl leading-[1.08] font-bold tracking-tight text-balance text-ink md:text-5xl">
             Catch every email your app sends
           </h1>
           <p class="mt-5 max-w-lg text-lg leading-relaxed text-ink-muted">
-            Nothing gets delivered. Every message lands in a local web UI
-            instead. An SMTP mail catcher for dev and test environments, in one
-            binary.
+            Nothing gets delivered. Point your app's SMTP at{" "}
+            <code class="font-mono text-base text-ink">localhost:1025</code>{" "}
+            and every message lands in a web UI on{" "}
+            <code class="font-mono text-base text-ink">localhost:8025</code>{" "}
+            instead. An SMTP mail catcher for dev and CI, in one binary.
           </p>
           <div class="mt-9 flex flex-wrap items-center gap-4">
             <a
@@ -126,7 +158,7 @@ const features = [
               rel="noopener noreferrer"
               class="inline-flex items-center gap-2 rounded-lg border border-edge-strong bg-raised px-7 py-3 text-sm font-semibold text-ink transition hover:border-ink-subtle hover:bg-edge"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              <Fragment set:html={githubIcon} />
               View on GitHub
             </a>
             <a
@@ -135,7 +167,7 @@ const features = [
               rel="noopener noreferrer"
               hidden
               data-release-badge
-              class="inline-flex items-center gap-2 rounded-full border border-edge-strong px-3 py-1.5 font-mono text-xs text-ink-muted transition hover:border-ink-subtle hover:text-ink"
+              class="inline-flex min-h-11 items-center gap-2 rounded-full border border-edge-strong px-4 font-mono text-xs text-ink-muted transition hover:border-ink-subtle hover:text-ink"
             >
               <span class="size-1.5 rounded-full bg-orange-500" />
               <span data-release-tag></span>
@@ -148,16 +180,25 @@ const features = [
           class="animate-scale-in overflow-hidden rounded-xl border border-edge bg-raised/80 text-left shadow-2xl backdrop-blur"
           style="animation-delay: 0.2s"
         >
-          <div class="flex items-center gap-2 border-b border-edge px-4 py-3">
+          <div class="flex items-center gap-2 border-b border-edge py-1 pr-1 pl-4">
             <span class="size-3 rounded-full bg-edge-strong"></span>
             <span class="size-3 rounded-full bg-edge-strong"></span>
             <span class="size-3 rounded-full bg-edge-strong"></span>
-            <span class="ml-3 text-xs text-ink-subtle">terminal</span>
+            <span class="ml-3 flex-1 text-xs text-ink-subtle">terminal</span>
+            <button
+              type="button"
+              data-cmd={DOCKER_CMD}
+              class="copy-btn inline-flex size-11 items-center justify-center rounded-md text-ink-subtle transition hover:bg-edge hover:text-ink"
+              aria-label="Copy the docker run command"
+            >
+              <Fragment set:html={copyIcon} />
+            </button>
           </div>
           <div class="p-5 font-mono text-sm leading-7">
-            <p>
-              <span class="text-ink-subtle">$</span>
-              <span class="text-ink"> docker run -p 1025:1025 -p 8025:8025 smyile/rustmail:latest</span>
+            <p class="text-ink">
+              <span class="text-ink-subtle">$</span> docker run \<br />
+              <span class="pl-8">-p 1025:1025 -p 8025:8025 \</span><br />
+              <span class="pl-8">smyile/rustmail:latest</span>
             </p>
             <p class="mt-2 text-ink-muted">
               <span class="text-ink-subtle">INFO</span> HTTP server listening port=<span class="text-orange-400">8025</span>
@@ -169,47 +210,19 @@ const features = [
         </div>
       </section>
 
-      <!-- Features -->
-      <section class="mx-auto max-w-6xl px-6 py-24">
-        <div class="mb-14 max-w-2xl">
-          <h2 class="font-brand text-3xl font-bold text-balance text-ink md:text-4xl">
-            What it does
-          </h2>
-          <p class="mt-4 text-lg text-ink-muted">
-            Persistence, search, a REST API, and a single binary you can drop
-            into CI.
-          </p>
-        </div>
-        <div class="grid border-t border-l border-edge sm:grid-cols-2 lg:grid-cols-3">
-          {
-            features.map((f) => (
-              <div class="border-r border-b border-edge p-7 transition hover:bg-raised/60">
-                <div class="mb-4 inline-flex text-orange-400">
-                  <Fragment set:html={f.icon} />
-                </div>
-                <h3 class="mb-2 text-base font-semibold text-ink">
-                  {f.title}
-                </h3>
-                <p class="text-sm leading-relaxed text-ink-muted">{f.description}</p>
-              </div>
-            ))
-          }
-        </div>
-      </section>
-
       <!-- Screenshot: the one full-bleed band that breaks the column -->
-      <section class="border-y border-edge bg-raised/70 py-24">
+      <section class="border-y border-edge bg-raised/70 py-20">
         <div class="mx-auto max-w-6xl px-6">
           <div class="mb-10 flex flex-wrap items-end justify-between gap-6">
             <div class="max-w-2xl">
               <h2 class="font-brand text-3xl font-bold text-balance text-ink md:text-4xl">
-                The web UI
+                Inspect every message in the web UI
               </h2>
               <p class="mt-4 text-lg text-ink-muted">
-                Inbox, message, and a details rail with auth results, attachments
-                and every link, with plain HTTP and localhost links flagged.
-                Preview the HTML at desktop or 375px phone width, in five
-                palettes, dark or light.
+                Inbox, message and a details rail with auth results,
+                attachments and links. New mail appears over WebSocket the
+                moment it arrives, with vim-style keys to move, search and
+                delete. Five palettes, dark or light.
               </p>
             </div>
             <div
@@ -223,8 +236,7 @@ const features = [
                 id="shot-tab-dark"
                 aria-controls="shot-panel-dark"
                 aria-selected="true"
-                data-shot="dark"
-                class="shot-btn rounded-md px-4 py-1.5 text-sm font-medium transition"
+                class="tab-btn min-h-11 rounded-md px-4 text-sm font-medium transition"
               >
                 Dark
               </button>
@@ -235,8 +247,7 @@ const features = [
                 aria-controls="shot-panel-light"
                 aria-selected="false"
                 tabindex="-1"
-                data-shot="light"
-                class="shot-btn rounded-md px-4 py-1.5 text-sm font-medium transition"
+                class="tab-btn min-h-11 rounded-md px-4 text-sm font-medium transition"
               >
                 Light
               </button>
@@ -244,7 +255,7 @@ const features = [
           </div>
 
           <div>
-            <div id="shot-panel-dark" role="tabpanel" aria-labelledby="shot-tab-dark" data-shot-panel="dark">
+            <div id="shot-panel-dark" role="tabpanel" aria-labelledby="shot-tab-dark">
               <Image
                 src={screenshotDark}
                 alt="RustMail web UI in dark mode: the inbox, an HTML email in desktop preview, and the details rail listing its links"
@@ -254,7 +265,7 @@ const features = [
                 loading="eager"
               />
             </div>
-            <div id="shot-panel-light" role="tabpanel" aria-labelledby="shot-tab-light" data-shot-panel="light" hidden>
+            <div id="shot-panel-light" role="tabpanel" aria-labelledby="shot-tab-light" hidden>
               <Image
                 src={screenshotLight}
                 alt="RustMail web UI in light mode: the inbox, an HTML email in desktop preview, and the details rail listing its links"
@@ -275,10 +286,7 @@ const features = [
                 <code class="font-mono text-ink">rustmail tui</code> connects to a
                 running server: the same inbox and search, with vim-style keys. It
                 ships in the pre-built binaries (not the Docker image) and as a{" "}
-                <a
-                  href="https://docs.rustmail.app/integrations/neovim"
-                  class="text-ink underline decoration-edge-strong underline-offset-4 transition hover:decoration-ink"
-                >Neovim plugin</a>.
+                <a href="https://docs.rustmail.app/integrations/neovim" class={linkClass}>Neovim plugin</a>.
               </p>
             </div>
             <div>
@@ -295,27 +303,119 @@ const features = [
         </div>
       </section>
 
+      <!-- Features -->
+      <section class="mx-auto max-w-6xl px-6 py-24">
+        <div class="mb-12 max-w-2xl">
+          <h2 class="font-brand text-3xl font-bold text-balance text-ink md:text-4xl">
+            Features for local email testing
+          </h2>
+          <p class="mt-4 text-lg text-ink-muted">
+            What RustMail checks and keeps for every message it catches.
+          </p>
+        </div>
+        <dl class="grid gap-x-12 sm:grid-cols-2">
+          {
+            features.map((f) => (
+              <div class="border-t border-edge py-6">
+                <dt class="text-base font-semibold text-ink">{f.title}</dt>
+                <dd class="mt-2 max-w-prose text-sm leading-relaxed text-pretty text-ink-muted">{f.description}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </section>
+
+      <!-- CI -->
+      <section class="mx-auto max-w-6xl px-6 pb-24">
+        <div class="grid gap-10 md:grid-cols-[1fr_1.4fr] md:items-start">
+          <div>
+            <h2 class="font-brand text-3xl font-bold text-balance text-ink md:text-4xl">
+              Test emails in CI
+            </h2>
+            <p class="mt-4 text-lg text-ink-muted">
+              Fail the build when an email is missing or wrong. Start RustMail
+              with the GitHub Action, wait with{" "}
+              <code class="font-mono text-base text-ink">rustmail assert</code>,
+              or check a running server with one{" "}
+              <code class="font-mono text-base text-ink">curl</code>.
+            </p>
+            <p class="mt-6 flex flex-col gap-2 text-sm">
+              <a href={ACTION_URL} target="_blank" rel="noopener noreferrer" class={`self-start ${linkClass}`}>
+                RustMail Action on the GitHub Marketplace
+              </a>
+              <a href="https://docs.rustmail.app/ci-integration/github-action" class={`self-start ${linkClass}`}>
+                CI integration guide
+              </a>
+            </p>
+          </div>
+          <div class="min-w-0 overflow-hidden rounded-xl border border-edge-strong bg-raised">
+            <div class="flex border-b border-edge p-1" role="tablist" aria-label="CI example">
+              {
+                ciExamples.map((example, i) => (
+                  <button
+                    type="button"
+                    role="tab"
+                    id={`ci-tab-${example.id}`}
+                    aria-controls={`ci-panel-${example.id}`}
+                    aria-selected={i === 0 ? "true" : "false"}
+                    tabindex={i === 0 ? undefined : "-1"}
+                    class="tab-btn min-h-11 rounded-md px-4 text-sm font-medium transition"
+                  >
+                    {example.label}
+                  </button>
+                ))
+              }
+            </div>
+            {
+              ciExamples.map((example, i) => (
+                <div
+                  id={`ci-panel-${example.id}`}
+                  role="tabpanel"
+                  aria-labelledby={`ci-tab-${example.id}`}
+                  hidden={i !== 0}
+                  class="flex items-start"
+                >
+                  <pre class="min-w-0 flex-1 overflow-x-auto p-5 font-mono text-sm leading-7 text-ink"><code>{example.code}</code></pre>
+                  <button
+                    type="button"
+                    data-cmd={example.code}
+                    class="copy-btn m-2 inline-flex size-11 shrink-0 items-center justify-center rounded-md text-ink-subtle transition hover:bg-edge hover:text-ink"
+                    aria-label={`Copy the ${example.label} example`}
+                  >
+                    <Fragment set:html={copyIcon} />
+                  </button>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
       <!-- Install -->
-      <section class="mx-auto max-w-4xl px-6 py-24">
+      <section class="mx-auto max-w-4xl px-6 pb-24">
         <div class="mb-12 max-w-2xl">
           <h2 class="font-brand text-3xl font-bold text-balance text-ink md:text-4xl">
             Install
           </h2>
+          <p class="mt-4 text-lg text-ink-muted">
+            Coming from MailHog or Mailpit? RustMail listens on the same
+            default ports, SMTP 1025 and HTTP 8025, so your app's SMTP settings
+            stay as they are. See how the three compare in the{" "}
+            <a href="https://docs.rustmail.app/benchmarks" class={linkClass}>benchmarks</a>.
+          </p>
         </div>
         <div class="flex flex-col gap-3">
-          {[
-            { label: "Docker", cmd: "docker run -p 1025:1025 -p 8025:8025 smyile/rustmail:latest" },
-            { label: "Homebrew", cmd: "brew install rustmailapp/rustmail/rustmail" },
-          ].map(({ label, cmd }) => (
-            <div class="flex items-center gap-4 rounded-xl border border-edge-strong bg-raised px-5 py-4">
-              <span class="w-20 shrink-0 text-xs font-medium tracking-wider text-ink-subtle uppercase">{label}</span>
-              <code class="min-w-0 flex-1 overflow-x-auto font-mono text-sm whitespace-nowrap text-ink">{cmd}</code>
+          {installs.map(({ label, cmd }) => (
+            <div class="grid grid-cols-[1fr_auto] items-center gap-x-4 rounded-xl border border-edge-strong bg-raised py-2 pr-2 pl-5 sm:grid-cols-[5rem_1fr_auto]">
+              <span class="text-xs font-medium tracking-wider text-ink-subtle uppercase sm:col-start-1">{label}</span>
+              <code class="col-span-2 row-start-2 min-w-0 pb-3 font-mono text-sm text-ink sm:col-span-1 sm:col-start-2 sm:row-start-1 sm:overflow-x-auto sm:pb-0 sm:whitespace-nowrap">{cmd}</code>
               <button
+                type="button"
                 data-cmd={cmd}
-                class="copy-btn shrink-0 rounded-md p-1.5 text-ink-subtle transition hover:bg-edge hover:text-ink"
+                class="copy-btn inline-flex size-11 items-center justify-center rounded-md text-ink-subtle transition hover:bg-edge hover:text-ink sm:col-start-3 sm:row-start-1"
                 aria-label={`Copy the ${label} command`}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                <Fragment set:html={copyIcon} />
               </button>
             </div>
           ))}
@@ -323,13 +423,13 @@ const features = [
             href="https://github.com/rustmailapp/rustmail/releases/latest"
             target="_blank"
             rel="noopener noreferrer"
-            class="group flex items-center gap-4 rounded-xl border border-edge-strong bg-raised px-5 py-4 transition hover:border-ink-subtle"
+            class="group grid grid-cols-[1fr_auto] items-center gap-x-4 rounded-xl border border-edge-strong bg-raised py-2 pr-2 pl-5 transition hover:border-ink-subtle sm:grid-cols-[5rem_1fr_auto]"
           >
-            <span class="w-20 shrink-0 text-xs font-medium tracking-wider text-ink-subtle uppercase">Binaries</span>
-            <span class="min-w-0 flex-1 truncate text-sm text-ink">
+            <span class="text-xs font-medium tracking-wider text-ink-subtle uppercase sm:col-start-1">Binaries</span>
+            <span class="col-span-2 row-start-2 min-w-0 pb-3 text-sm text-ink sm:col-span-1 sm:col-start-2 sm:row-start-1 sm:truncate sm:pb-0">
               Linux x86_64, aarch64 and armv7, macOS Intel and Apple Silicon
             </span>
-            <span class="shrink-0 p-1.5 text-ink-subtle transition group-hover:text-ink">
+            <span class="inline-flex size-11 items-center justify-center text-ink-subtle transition group-hover:text-ink sm:col-start-3 sm:row-start-1">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
             </span>
           </a>
@@ -352,10 +452,12 @@ const features = [
             Get Started
           </a>
           <a
-            href="https://docs.rustmail.app"
+            href={ACTION_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             class="rounded-lg border border-edge-strong bg-raised px-7 py-3 text-sm font-semibold text-ink transition hover:border-ink-subtle hover:bg-edge"
           >
-            Read the Docs
+            Add the GitHub Action
           </a>
         </div>
       </section>
@@ -370,10 +472,10 @@ const features = [
             RustMail &middot; MIT / Apache 2.0
           </span>
         </div>
-        <div class="flex gap-5 text-sm text-ink-muted">
-          <a href="https://docs.rustmail.app" class="inline-flex items-center px-1 py-1 transition hover:text-ink">Docs</a>
-          <a href="https://github.com/rustmailapp/rustmail" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-1 py-1 transition hover:text-ink">GitHub</a>
-          <a href="https://github.com/rustmailapp/rustmail/releases" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-1 py-1 transition hover:text-ink">Releases</a>
+        <div class="flex gap-3 text-sm text-ink-muted">
+          <a href="https://docs.rustmail.app" class="inline-flex min-h-11 items-center px-2 transition hover:text-ink">Docs</a>
+          <a href="https://github.com/rustmailapp/rustmail" target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center px-2 transition hover:text-ink">GitHub</a>
+          <a href="https://github.com/rustmailapp/rustmail/releases" target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center px-2 transition hover:text-ink">Releases</a>
         </div>
       </div>
       <div aria-hidden="true" class="footer-wordmark mt-10 -mb-[0.2em] text-center font-brand select-none">
@@ -384,5 +486,5 @@ const features = [
 </Layout>
 
 <script type="module" src="/copy.js"></script>
-<script type="module" src="/shot-toggle.js"></script>
+<script type="module" src="/tabs.js"></script>
 <script type="module" src="/release-badge.js"></script>
