@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
+import { guides } from "../data/guides";
 
-const PATHS = ["/"];
+const PATHS = ["/", "/compare/", "/guides/", ...guides.map((guide) => `/guides/${guide.slug}/`)];
 
 export const GET: APIRoute = ({ site }) => {
   if (!site) throw new Error("sitemap.xml needs `site` set in astro.config.mjs");

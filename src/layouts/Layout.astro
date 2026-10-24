@@ -4,15 +4,19 @@ import "../styles/global.css";
 interface Props {
   title?: string;
   description?: string;
+  path?: string;
 }
 
 const {
   title = "RustMail · Local SMTP mail catcher for dev and CI testing",
   description = "Test email in dev and CI. RustMail catches everything your app sends over SMTP: web UI, terminal UI, REST API, CLI assertions and a GitHub Action. Open source.",
+  path = "/",
 } = Astro.props;
 
-const url = "https://rustmail.app";
-const ogImage = `${url}/og.png`;
+const site = "https://rustmail.app";
+const url = path === "/" ? site : `${site}${path}`;
+const isHome = path === "/";
+const ogImage = `${site}/og.png`;
 const ogImageAlt = "RustMail web UI: the inbox, an HTML email in desktop preview, and the details rail listing its links";
 const OG_IMAGE_WIDTH = "1200";
 const OG_IMAGE_HEIGHT = "630";
@@ -23,7 +27,7 @@ const jsonLd = [
     "@type": "SoftwareApplication",
     name: "RustMail",
     description,
-    url,
+    url: site,
     image: ogImage,
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Linux, macOS, Docker",
@@ -42,7 +46,7 @@ const jsonLd = [
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "RustMail",
-    url,
+    url: site,
   },
 ];
 const jsonLdHtml = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
@@ -73,7 +77,7 @@ const jsonLdHtml = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content={ogImageAlt} />
-    <script is:inline type="application/ld+json" set:html={jsonLdHtml} />
+    {isHome && <script is:inline type="application/ld+json" set:html={jsonLdHtml} />}
   </head>
   <body class="min-h-screen overflow-x-hidden">
     <slot />

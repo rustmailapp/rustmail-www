@@ -1,0 +1,50 @@
+---
+import Patina from "../../components/Patina.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import SiteNav from "../../components/SiteNav.astro";
+import { guides } from "../../data/guides";
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+  title="Email testing guides for Laravel, Django, Rails and more · RustMail"
+  description="Step-by-step guides to catch and test the emails your framework sends, locally and in CI, with the RustMail SMTP mail catcher."
+  path="/guides/"
+>
+  <Patina />
+
+  <div class="relative z-10">
+    <SiteNav />
+
+    <main class="mx-auto max-w-3xl px-6 pt-12 pb-24 md:pt-20">
+      <h1 class="font-brand text-4xl leading-[1.08] font-bold tracking-tight text-balance text-ink md:text-5xl">
+        Email testing guides
+      </h1>
+      <p class="mt-5 text-lg leading-relaxed text-ink-muted">
+        Point your framework at RustMail, see every email in a web UI, and
+        assert on it in CI. Pick your stack.
+      </p>
+      <ul class="mt-12 border-t border-edge">
+        {
+          guides.map((g) => (
+            <li class="border-b border-edge">
+              <a href={`/guides/${g.slug}/`} class="group flex items-center justify-between gap-6 py-6">
+                <span>
+                  <span class="block font-brand text-xl font-bold text-ink">{g.name}</span>
+                  <span class="mt-1 block text-sm text-ink-muted">
+                    {g.language} · configure {g.configFile}, send a test email, assert in CI
+                  </span>
+                </span>
+                <span class="text-ink-subtle transition group-hover:translate-x-1 group-hover:text-ink" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </main>
+
+    <SiteFooter />
+  </div>
+</Layout>

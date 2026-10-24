@@ -1,0 +1,22 @@
+---
+import { copyIcon } from "../data/icons";
+
+interface Props {
+  code: string;
+  label: string;
+}
+
+const { code, label } = Astro.props;
+---
+
+<div class="flex min-w-0 items-start overflow-hidden rounded-xl border border-edge-strong bg-raised">
+  <pre class="min-w-0 flex-1 overflow-x-auto p-5 font-mono text-sm leading-7 text-ink"><code>{code}</code></pre>
+  <button
+    type="button"
+    data-cmd={code}
+    class="copy-btn m-2 inline-flex size-11 shrink-0 items-center justify-center rounded-md text-ink-subtle transition hover:bg-edge hover:text-ink"
+    aria-label={`Copy the ${label}`}
+  >
+    <Fragment set:html={copyIcon} />
+  </button>
+</div>
