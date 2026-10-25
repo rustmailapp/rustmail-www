@@ -4,6 +4,7 @@ import Layout from "../layouts/Layout.astro";
 import Patina from "../components/Patina.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNav from "../components/SiteNav.astro";
+import { BENCHMARKS_URL, bars, difference, landingMetrics } from "../data/benchmarks";
 import { copyIcon, githubIcon } from "../data/icons";
 import screenshotDark from "../assets/screenshot.png";
 import screenshotLight from "../assets/screenshot-light.png";
@@ -344,6 +345,56 @@ const linkClass = "text-ink underline decoration-edge-strong underline-offset-4 
         </div>
       </section>
 
+      <!-- Benchmarks -->
+      <section class="mx-auto max-w-6xl px-6 pb-24" aria-labelledby="bench-title">
+        <div class="mb-12 max-w-2xl">
+          <h2 id="bench-title" class="font-brand text-3xl font-bold text-balance text-ink md:text-4xl">
+            Fast where your tests wait
+          </h2>
+          <p class="mt-4 text-lg text-ink-muted">
+            All three in Docker, 100,000 messages stored. Shorter is better.
+          </p>
+        </div>
+        <div class="grid gap-x-16 gap-y-10 md:grid-cols-2">
+          {
+            landingMetrics.map((metric) => (
+              <figure>
+                <figcaption class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                  <span class="font-semibold text-ink">{metric.label}</span>
+                  <span class="font-brand font-bold text-orange-400">
+                    {difference(metric, "mailpit").text} than Mailpit
+                  </span>
+                </figcaption>
+                <dl class="mt-4 flex flex-col gap-3 text-sm">
+                  {
+                    bars(metric).map((bar) => (
+                      <div class="grid grid-cols-[5.5rem_minmax(0,1fr)] items-center gap-3">
+                        <dt class={bar.isRustmail ? "font-medium text-ink" : "text-ink-muted"}>{bar.name}</dt>
+                        <dd class="flex items-center gap-3">
+                          <span class="h-2.5 flex-1 overflow-hidden rounded-full bg-raised" aria-hidden="true">
+                            <span
+                              class={`block h-full rounded-full ${bar.isRustmail ? "bg-orange-400" : "bg-edge-strong"}`}
+                              style={`width: ${bar.widthPercent}%`}
+                            />
+                          </span>
+                          <span class="w-24 text-right font-mono text-xs text-ink-muted">{bar.text}</span>
+                        </dd>
+                      </div>
+                    ))
+                  }
+                </dl>
+              </figure>
+            ))
+          }
+        </div>
+        <p class="mt-10 max-w-3xl text-sm leading-relaxed text-ink-muted">
+          Latencies are p50, median of at least 3 runs on an Apple M4 Pro. MailHog runs
+          under amd64 emulation and keeps mail in memory only. See the{" "}
+          <a href="/compare/#speed" class={linkClass}>full comparison</a> or the{" "}
+          <a href={BENCHMARKS_URL} class={linkClass}>method and raw numbers</a>.
+        </p>
+      </section>
+
       <!-- Install -->
       <section class="mx-auto max-w-4xl px-6 pb-24">
         <div class="mb-12 max-w-2xl">
@@ -353,8 +404,8 @@ const linkClass = "text-ink underline decoration-edge-strong underline-offset-4 
           <p class="mt-4 text-lg text-ink-muted">
             Coming from MailHog or Mailpit? RustMail listens on the same
             default ports, SMTP 1025 and HTTP 8025, so your app's SMTP settings
-            stay as they are. See how the three compare in the{" "}
-            <a href="https://docs.rustmail.app/benchmarks" class={linkClass}>benchmarks</a>.
+            stay as they are. See how the three{" "}
+            <a href="/compare/" class={linkClass}>compare</a>.
           </p>
         </div>
         <div class="flex flex-col gap-3">
