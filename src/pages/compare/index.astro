@@ -2,10 +2,12 @@
 import Patina from "../../components/Patina.astro";
 import SiteFooter from "../../components/SiteFooter.astro";
 import SiteNav from "../../components/SiteNav.astro";
+import { BENCHMARKS_URL, competitors, difference, formatValue, metrics, toolNames } from "../../data/benchmarks";
 import { SOURCES_CHECKED, featureRows } from "../../data/compare";
 import Layout from "../../layouts/Layout.astro";
 
 const linkClass = "text-ink underline decoration-edge-strong underline-offset-4 transition hover:decoration-ink";
+const speedViews = [{ id: "all", label: "All" }, ...competitors.map((id) => ({ id, label: toolNames[id] }))];
 const verdicts = [
   {
     title: "Pick Mailpit",
@@ -24,7 +26,7 @@ const verdicts = [
 
 <Layout
   title="RustMail vs Mailpit vs MailHog: local SMTP mail catchers compared"
-  description="An honest comparison of three local SMTP mail catchers: features, CI support and maintenance, including where Mailpit is ahead of RustMail."
+  description="An honest comparison of three local SMTP mail catchers: features, speed, CI support and maintenance, including where Mailpit is ahead of RustMail."
   path="/compare/"
 >
   <Patina />
@@ -87,8 +89,107 @@ const verdicts = [
           "Not listed" means the feature is not in the project's README feature
           list as of {SOURCES_CHECKED}. Corrections are welcome as an issue on{" "}
           <a href="https://github.com/rustmailapp/rustmail-www/issues" class={linkClass}>GitHub</a>.
-          For speed, memory and disk, see the{" "}
-          <a href="https://docs.rustmail.app/benchmarks" class={linkClass}>benchmarks</a>.
+        </p>
+      </section>
+
+      <section id="speed" class="mt-20 scroll-mt-24" aria-labelledby="speed-title">
+        <div class="flex flex-wrap items-end justify-between gap-6">
+          <div class="max-w-2xl">
+            <h2 id="speed-title" class="font-brand text-3xl font-bold text-ink">Speed, memory and disk</h2>
+            <p class="mt-4 text-ink-muted">
+              All three in Docker on an Apple M4 Pro, 100,000 small messages
+              stored. Latencies are p50, median of at least 3 runs.
+            </p>
+          </div>
+          <div
+            class="inline-flex flex-wrap rounded-lg border border-edge-strong bg-surface p-1"
+            role="tablist"
+            aria-label="Compare RustMail with"
+          >
+            {
+              speedViews.map((view, i) => (
+                <button
+                  type="button"
+                  role="tab"
+                  id={`speed-tab-${view.id}`}
+                  aria-controls={`speed-panel-${view.id}`}
+                  aria-selected={i === 0 ? "true" : "false"}
+                  tabindex={i === 0 ? undefined : "-1"}
+                  class="tab-btn min-h-11 rounded-md px-4 text-sm font-medium transition"
+                >
+                  {view.label}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+
+        <div id="speed-panel-all" role="tabpanel" aria-labelledby="speed-tab-all" class="mt-6 overflow-x-auto rounded-xl border border-edge-strong">
+          <table class="w-full min-w-[40rem] text-left text-sm">
+            <thead class="bg-raised text-ink">
+              <tr>
+                <th scope="col" class="w-1/3 px-5 py-4 font-medium text-ink-muted">
+                  <span class="sr-only">Metric</span>
+                </th>
+                <th scope="col" class="px-5 py-4 font-semibold text-orange-400">RustMail</th>
+                {competitors.map((id) => <th scope="col" class="px-5 py-4 font-semibold">{toolNames[id]}</th>)}
+              </tr>
+            </thead>
+            <tbody class="text-ink-muted">
+              {
+                metrics.map((metric) => (
+                  <tr class="border-t border-edge">
+                    <th scope="row" class="px-5 py-3.5 font-medium text-ink">{metric.label}</th>
+                    <td class="px-5 py-3.5 font-mono text-ink">{formatValue(metric.values.rustmail, metric.unit)}</td>
+                    {competitors.map((id) => (
+                      <td class="px-5 py-3.5 font-mono">{formatValue(metric.values[id], metric.unit)}</td>
+                    ))}
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+
+        {
+          competitors.map((id) => (
+            <div
+              id={`speed-panel-${id}`}
+              role="tabpanel"
+              aria-labelledby={`speed-tab-${id}`}
+              hidden
+              class="mt-6 overflow-x-auto rounded-xl border border-edge-strong"
+            >
+              <table class="w-full min-w-[40rem] text-left text-sm">
+                <thead class="bg-raised text-ink">
+                  <tr>
+                    <th scope="col" class="w-1/3 px-5 py-4 font-medium text-ink-muted">
+                      <span class="sr-only">Metric</span>
+                    </th>
+                    <th scope="col" class="px-5 py-4 font-semibold text-orange-400">RustMail</th>
+                    <th scope="col" class="px-5 py-4 font-semibold">{toolNames[id]}</th>
+                    <th scope="col" class="px-5 py-4 font-semibold text-ink-muted">Difference</th>
+                  </tr>
+                </thead>
+                <tbody class="text-ink-muted">
+                  {metrics.map((metric) => (
+                    <tr class="border-t border-edge">
+                      <th scope="row" class="px-5 py-3.5 font-medium text-ink">{metric.label}</th>
+                      <td class="px-5 py-3.5 font-mono text-ink">{formatValue(metric.values.rustmail, metric.unit)}</td>
+                      <td class="px-5 py-3.5 font-mono">{formatValue(metric.values[id], metric.unit)}</td>
+                      <td class="px-5 py-3.5 font-semibold text-orange-400">{difference(metric, id)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ))
+        }
+
+        <p class="mt-4 max-w-3xl text-sm text-ink-muted">
+          MailHog runs under amd64 emulation and keeps mail in memory only, so a
+          restart empties it. Method, raw numbers and the harness to rerun them:{" "}
+          <a href={BENCHMARKS_URL} class={linkClass}>benchmarks</a>.
         </p>
       </section>
 
@@ -113,3 +214,5 @@ const verdicts = [
     <SiteFooter />
   </div>
 </Layout>
+
+<script type="module" src="/tabs.js"></script>
