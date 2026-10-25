@@ -97,7 +97,7 @@ const verdicts = [
           <div class="max-w-2xl">
             <h2 id="speed-title" class="font-brand text-3xl font-bold text-ink">Speed, memory and disk</h2>
             <p class="mt-4 text-ink-muted">
-              All three in Docker on an Apple M4 Pro, 100,000 small messages
+              Each tool in Docker on an Apple M4 Pro, 100,000 small messages
               stored. Latencies are p50, median of at least 3 runs.
             </p>
           </div>
@@ -177,7 +177,9 @@ const verdicts = [
                       <th scope="row" class="px-5 py-3.5 font-medium text-ink">{metric.label}</th>
                       <td class="px-5 py-3.5 font-mono text-ink">{formatValue(metric.values.rustmail, metric.unit)}</td>
                       <td class="px-5 py-3.5 font-mono">{formatValue(metric.values[id], metric.unit)}</td>
-                      <td class="px-5 py-3.5 font-semibold text-orange-400">{difference(metric, id)}</td>
+                      <td class={`px-5 py-3.5 font-semibold ${difference(metric, id).rustmailAhead ? "text-orange-400" : "text-ink"}`}>
+                        {difference(metric, id).text}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -187,8 +189,11 @@ const verdicts = [
         }
 
         <p class="mt-4 max-w-3xl text-sm text-ink-muted">
-          MailHog runs under amd64 emulation and keeps mail in memory only, so a
-          restart empties it. Method, raw numbers and the harness to rerun them:{" "}
+          MailHog and MailCrab keep mail in memory only, so a restart empties
+          them; MailHog also runs under amd64 emulation. MailCrab's API has no
+          paged listing or search. The ingest row puts the load generator inside
+          Docker's VM and was run for RustMail and Mailpit only. Method, raw
+          numbers and the harness to rerun them:{" "}
           <a href={BENCHMARKS_URL} class={linkClass}>benchmarks</a>.
         </p>
       </section>

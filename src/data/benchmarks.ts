@@ -1,4 +1,4 @@
-export type ToolId = "rustmail" | "mailpit" | "mailhog";
+export type ToolId = "rustmail" | "mailpit" | "mailhog" | "maildev" | "mailcrab";
 
 export type Competitor = Exclude<ToolId, "rustmail">;
 
@@ -11,6 +11,11 @@ export interface Metric {
   higherIsBetter: boolean;
   advantage: string;
   values: Record<ToolId, MetricValue>;
+}
+
+export interface Verdict {
+  text: string;
+  rustmailAhead: boolean;
 }
 
 export interface Bar {
@@ -26,9 +31,14 @@ export const toolNames: Record<ToolId, string> = {
   rustmail: "RustMail",
   mailpit: "Mailpit",
   mailhog: "MailHog",
+  maildev: "MailDev",
+  mailcrab: "MailCrab",
 };
 
-export const competitors: Competitor[] = ["mailpit", "mailhog"];
+export const competitors: Competitor[] = ["mailpit", "mailhog", "maildev", "mailcrab"];
+
+const LANDING_TOOLS: ToolId[] = ["rustmail", "mailpit", "mailhog"];
+const NOT_IN_API = "Not in the API";
 
 const SAME_WITHIN = 1.15;
 const MIN_BAR_PERCENT = 1.5;
@@ -40,7 +50,7 @@ export const metrics: Metric[] = [
     unit: "ms",
     higherIsBetter: false,
     advantage: "faster",
-    values: { rustmail: 0.66, mailpit: 203, mailhog: 1265 },
+    values: { rustmail: 0.66, mailpit: 203, mailhog: 1265, maildev: 81, mailcrab: NOT_IN_API },
   },
   {
     id: "search-common",
@@ -48,7 +58,7 @@ export const metrics: Metric[] = [
     unit: "ms",
     higherIsBetter: false,
     advantage: "faster",
-    values: { rustmail: 2.9, mailpit: 536, mailhog: 358 },
+    values: { rustmail: 2.9, mailpit: 536, mailhog: 358, maildev: 63, mailcrab: NOT_IN_API },
   },
   {
     id: "list-first",
@@ -56,7 +66,7 @@ export const metrics: Metric[] = [
     unit: "ms",
     higherIsBetter: false,
     advantage: "faster",
-    values: { rustmail: 0.94, mailpit: 8.3, mailhog: 2.2 },
+    values: { rustmail: 0.94, mailpit: 8.3, mailhog: 2.2, maildev: 38, mailcrab: NOT_IN_API },
   },
   {
     id: "list-deep",
@@ -64,7 +74,7 @@ export const metrics: Metric[] = [
     unit: "ms",
     higherIsBetter: false,
     advantage: "faster",
-    values: { rustmail: 1.5, mailpit: 12.8, mailhog: 2.4 },
+    values: { rustmail: 1.5, mailpit: 12.8, mailhog: 2.4, maildev: 39, mailcrab: NOT_IN_API },
   },
   {
     id: "get-one",
@@ -72,7 +82,7 @@ export const metrics: Metric[] = [
     unit: "ms",
     higherIsBetter: false,
     advantage: "faster",
-    values: { rustmail: 0.46, mailpit: 0.38, mailhog: 0.41 },
+    values: { rustmail: 0.46, mailpit: 0.38, mailhog: 0.41, maildev: 0.38, mailcrab: 0.27 },
   },
   {
     id: "ingest",
@@ -80,7 +90,7 @@ export const metrics: Metric[] = [
     unit: "msg/s",
     higherIsBetter: true,
     advantage: "faster",
-    values: { rustmail: 6025, mailpit: 3698, mailhog: "Not measured" },
+    values: { rustmail: 6025, mailpit: 3698, mailhog: "Not measured", maildev: "Not measured", mailcrab: "Not measured" },
   },
   {
     id: "disk",
@@ -88,7 +98,7 @@ export const metrics: Metric[] = [
     unit: "MB",
     higherIsBetter: false,
     advantage: "smaller",
-    values: { rustmail: 110, mailpit: 210, mailhog: "Memory only" },
+    values: { rustmail: 110, mailpit: 210, mailhog: "Memory only", maildev: 393, mailcrab: "Memory only" },
   },
   {
     id: "idle-memory",
@@ -96,7 +106,7 @@ export const metrics: Metric[] = [
     unit: "MB",
     higherIsBetter: false,
     advantage: "less",
-    values: { rustmail: 9.4, mailpit: 19.6, mailhog: 22.7 },
+    values: { rustmail: 9.4, mailpit: 19.6, mailhog: 22.7, maildev: 106.5, mailcrab: 6.6 },
   },
   {
     id: "restart",
@@ -104,7 +114,7 @@ export const metrics: Metric[] = [
     unit: "s",
     higherIsBetter: false,
     advantage: "faster",
-    values: { rustmail: 0.3, mailpit: 0.64, mailhog: "Inbox empty" },
+    values: { rustmail: 0.3, mailpit: 0.64, mailhog: "Inbox empty", maildev: 24, mailcrab: "Inbox empty" },
   },
 ];
 
@@ -123,20 +133,22 @@ function formatRatio(ratio: number): string {
   return ratio >= 10 ? `${Math.round(ratio).toLocaleString("en-US")}x` : `${ratio.toFixed(1)}x`;
 }
 
-/** Plain-words verdict for RustMail against one competitor; an empty string when either value is not a number. */
-export function difference(metric: Metric, competitor: Competitor): string {
+/** Plain-words verdict for RustMail against one competitor; empty text when either value is not a number. */
+export function difference(metric: Metric, competitor: Competitor): Verdict {
   const ratio = ratioAgainst(metric, competitor);
-  if (ratio === null) return "";
-  if (ratio >= SAME_WITHIN) return `${formatRatio(ratio)} ${metric.advantage}`;
-  if (ratio <= 1 / SAME_WITHIN) return `${toolNames[competitor]} ${formatRatio(1 / ratio)} ${metric.advantage}`;
-  return "About the same";
+  if (ratio === null) return { text: "", rustmailAhead: false };
+  if (ratio >= SAME_WITHIN) return { text: `${formatRatio(ratio)} ${metric.advantage}`, rustmailAhead: true };
+  if (ratio <= 1 / SAME_WITHIN) {
+    return { text: `${toolNames[competitor]} ${formatRatio(1 / ratio)} ${metric.advantage}`, rustmailAhead: false };
+  }
+  return { text: "About the same", rustmailAhead: false };
 }
 
-/** Bars for a lower-is-better metric, each as a share of the largest value. */
+/** Landing bars for a lower-is-better metric, each as a share of the largest value shown. */
 export function bars(metric: Metric): Bar[] {
-  const numbers = Object.values(metric.values).filter((v): v is number => typeof v === "number");
+  const numbers = LANDING_TOOLS.map((id) => metric.values[id]).filter((v): v is number => typeof v === "number");
   const max = Math.max(...numbers);
-  return (Object.keys(toolNames) as ToolId[]).map((id) => {
+  return LANDING_TOOLS.map((id) => {
     const value = metric.values[id];
     return {
       name: toolNames[id],
